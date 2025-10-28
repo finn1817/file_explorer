@@ -1,5 +1,10 @@
-import sys
 import os
+import sys
+
+# Prevent creation of .pyc files as early as possible (applies to subsequent imports)
+os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
+sys.dont_write_bytecode = True
+
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIcon

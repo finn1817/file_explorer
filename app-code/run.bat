@@ -10,7 +10,11 @@ echo.
 echo Starting application...
 echo.
 
+REM Ensure Python does not write .pyc files anywhere
+set PYTHONDONTWRITEBYTECODE=1
+
 cd python
-python main.py
+REM Use -B as an extra safeguard to disable writing .pyc
+python -B main.py
 
 pause
