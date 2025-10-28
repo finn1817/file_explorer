@@ -4,57 +4,70 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Liquid Glass File Explorer — Overview + Simple Demo</title>
-	<style>
-		:root {
-			--bg: #0f1115;
-			--panel: #171a21;
-			--text: #e7ecf3;
-			--muted: #a8b3c3;
-			--accent: #5cc8ff;
-			--accent-2: #a78bfa;
-			--ok: #34d399;
-			--warn: #f59e0b;
-		}
-		html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text); font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-		a { color: var(--accent); text-decoration: none; }
-		a:hover { text-decoration: underline; }
-		.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
-		header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom: 16px; }
-		header h1 { font-size: 1.4rem; margin: 0; }
-		.card { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-		.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-		.muted { color: var(--muted); }
-		.toolbar { display:flex; align-items:center; gap:8px; flex-wrap: wrap; padding: 8px; background: var(--panel); border-radius: 10px; border:1px solid rgba(255,255,255,0.06); }
-		.toolbar input[type="text"] { flex:1; min-width: 200px; padding: 8px 10px; background:#0c0f14; color:var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:8px; }
-		.toolbar button, .pill { padding:8px 10px; background:#0c0f14; color:var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; }
-		.toolbar button:hover { background:#10141a; }
-		.pill { font-size: 12px; }
-		.row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
-		.fileview { background: var(--panel); border-radius: 10px; border:1px solid rgba(255,255,255,0.06); overflow: hidden; }
-		table { width:100%; border-collapse: collapse; }
-		th, td { text-align:left; padding: 10px 12px; border-bottom:1px solid rgba(255,255,255,0.06); }
-		th { color: var(--muted); background: rgba(255,255,255,0.03); position: sticky; top: 0; backdrop-filter: blur(4px); }
-		tr:hover td { background: rgba(255,255,255,0.02); }
-		.name { display:flex; align-items:center; gap:10px; }
-		.badge { display:inline-block; padding:2px 6px; border-radius:6px; font-size:12px; border:1px solid rgba(255,255,255,0.12); color: var(--muted); }
-		.band { color: var(--warn); }
-		.sidebar { background: var(--panel); border-radius: 10px; padding: 12px; border:1px solid rgba(255,255,255,0.06); }
-		.section-title { font-weight:600; font-size: 0.95rem; margin: 0 0 8px; color: var(--muted); }
-		.list { display:flex; flex-direction: column; gap: 6px; }
-		.list button { justify-content: space-between; display:flex; align-items:center; }
-		.footer { margin-top: 24px; color: var(--muted); font-size: 13px; }
-		@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-	</style>
+		<style>
+			:root {
+				--bg: #0d0f14;
+				--panel: #141821;
+				--panel-2: #0e1218;
+				--text: #eef2f8;
+				--muted: #aab3c2;
+				--accent: #5cc8ff;
+				--accent-2: #9aa0ff;
+				--ok: #34d399;
+				--warn: #f59e0b;
+				--border: rgba(255,255,255,0.08);
+				--border-2: rgba(255,255,255,0.06);
+				--btn-bg: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+			}
+			html, body { margin:0; padding:0; height:100%; background: radial-gradient(1200px 600px at 20% -10%, rgba(92,200,255,0.08), transparent), radial-gradient(900px 500px at 110% 10%, rgba(154,160,255,0.06), transparent), var(--bg); color:var(--text); font-family: Segoe UI, system-ui, Roboto, Helvetica, Arial, sans-serif; }
+			a { color: var(--accent); text-decoration: none; }
+			a:hover { text-decoration: underline; }
+			.container { max-width: 1280px; margin: 0 auto; padding: 18px 20px; }
+			.muted { color: var(--muted); }
+			.badge { display:inline-block; padding:2px 6px; border-radius:6px; font-size:12px; border:1px solid var(--border); color: var(--muted); }
+
+			/* Top window bar mimic */
+			.windowbar { display:flex; align-items:center; gap:10px; padding: 8px; background: var(--panel); border:1px solid var(--border); border-radius: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 30px rgba(0,0,0,0.35); backdrop-filter: blur(6px); }
+			.btn { display:inline-flex; align-items:center; gap:8px; padding:10px 14px; border-radius:10px; border:1px solid var(--border); background: var(--btn-bg); color:var(--text); cursor:pointer; }
+			.btn:hover { border-color: rgba(255,255,255,0.12); }
+			.field { flex:1; display:flex; align-items:center; gap:8px; padding: 8px 10px; background: var(--panel-2); color:var(--text); border:1px solid var(--border-2); border-radius:10px; }
+			.field input { flex:1; background:transparent; border:0; outline:0; color:var(--text); font-size: 14px; }
+
+			/* Actions toolbar */
+			.actions { display:flex; align-items:center; gap:10px; margin-top: 10px; padding: 8px; background: var(--panel); border:1px solid var(--border); border-radius: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+
+			/* Layout */
+			.layout { display:grid; grid-template-columns: 280px 1fr; gap: 14px; margin-top: 14px; }
+			.sidebar { display:flex; flex-direction:column; gap: 12px; }
+			.card { background: var(--panel); border:1px solid var(--border); border-radius:12px; padding: 12px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05); }
+			.section-title { font-weight:600; color:var(--muted); margin: 4px 0 10px; }
+			.qa-item { display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:10px; border:1px solid var(--border-2); background: var(--panel-2); cursor:pointer; }
+			.qa-item:hover { border-color: rgba(255,255,255,0.12); }
+			.qa-list { display:flex; flex-direction:column; gap: 8px; }
+			.favorites-empty { text-align:center; color:var(--muted); font-style: italic; padding: 18px 6px; }
+
+			/* File view */
+			.fileview { background: var(--panel); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+			table { width:100%; border-collapse: collapse; }
+			th, td { text-align:left; padding: 10px 12px; border-bottom:1px solid var(--border-2); }
+			thead th { color: var(--muted); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); position: sticky; top: 0; backdrop-filter: blur(4px); }
+			tr:hover td { background: rgba(255,255,255,0.02); }
+			.name { display:flex; align-items:center; gap:10px; }
+			.icon { width:18px; height:18px; display:inline-grid; place-items:center; background: #1c212c; border:1px solid var(--border-2); border-radius:6px; font-size:12px; }
+			.band { color: var(--warn); }
+			@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+		</style>
 </head>
 <body>
 	<div class="container">
-		<header>
-			<h1>Liquid Glass File Explorer — Overview + Simple Demo</h1>
-			<nav class="row">
-				<a href="schema.html" class="pill">Schema</a>
-				<a href="#demo" class="pill">Jump to Demo</a>
-			</nav>
-		</header>
+			<!-- Top title and quick links -->
+			<header class="row" style="justify-content:space-between; margin-bottom:10px;">
+				<h1 style="font-size:1.25rem; margin:0;">Liquid Glass File Explorer — Overview + Simple Demo</h1>
+				<nav class="row">
+					<a href="schema.html" class="pill">Schema</a>
+					<a href="#demo" class="pill">Jump to Demo</a>
+				</nav>
+			</header>
 
 		<div class="card" style="margin-bottom:16px;">
 			<p class="muted">A modern PyQt6 desktop file explorer with:
@@ -71,46 +84,81 @@
 			<p class="muted">This page includes a zero-save, browser-only demo that mimics the UI behavior using sample data.</p>
 		</div>
 
-		<h2 id="demo" style="margin:12px 0">Simple Demo (no saving)</h2>
-		<div class="grid">
-			<div class="card">
-				<div class="toolbar" id="topbar">
-					<button id="backBtn">⬅ Back</button>
-					<button id="upBtn">⬆ Up</button>
-					<button id="refreshBtn">🔄 Refresh</button>
-					<input id="address" type="text" placeholder="Address" />
-					<input id="search" type="text" placeholder="Search in current folder" />
+			<h2 id="demo" style="margin:12px 0">Simple Demo (no saving)</h2>
+
+			<!-- Navigation toolbar (mimic app) -->
+			<div class="windowbar">
+				<button class="btn" id="backBtn">⬅ Back</button>
+				<button class="btn" id="forwardBtn">➡ Forward</button>
+				<button class="btn" id="upBtn">⬆ Up</button>
+				<button class="btn" id="refreshBtn">🔄 Refresh</button>
+				<div class="field" title="Address">
+					<span>📁</span>
+					<input id="address" type="text" placeholder="C:/Users/you" readonly>
 				</div>
-				<div class="row" style="margin:8px 0;">
-					<span class="badge">Movable toolbar in app</span>
-					<span class="badge">Async folder sizes in app</span>
-					<span class="badge">No writes in this demo</span>
+				<div class="field" title="Search in current folder">
+					<span>🔎</span>
+					<input id="search" type="text" placeholder="Search files...">
 				</div>
-				<div class="fileview">
+			</div>
+
+			<!-- Actions toolbar (mimic app) -->
+			<div class="actions">
+				<button class="btn" id="newFolder">📁 New Folder</button>
+				<button class="btn" id="copyBtn">📋 Copy</button>
+				<button class="btn" id="cutBtn">✂️ Cut</button>
+				<button class="btn" id="pasteBtn">📌 Paste</button>
+				<button class="btn" id="renameBtn">✏️ Rename</button>
+				<button class="btn" id="deleteBtn">🗑️ Delete</button>
+				<button class="btn" id="favBtn">⭐ Add to Favorites</button>
+			</div>
+
+			<div class="layout">
+				<!-- Sidebar mimic -->
+				<aside class="sidebar">
+					<div class="card">
+						<div class="section-title">Quick Access</div>
+						<div class="qa-list">
+							<div class="qa-item" data-target="Desktop">🖥️ Desktop</div>
+							<div class="qa-item" data-target="Documents">📄 Documents</div>
+							<div class="qa-item" data-target="Downloads">⬇️ Downloads</div>
+							<div class="qa-item" data-target="Pictures">🖼️ Pictures</div>
+							<div class="qa-item" data-target="Videos">🎬 Videos</div>
+							<div class="qa-item" data-target="Music">🎵 Music</div>
+							<div class="qa-item" data-target="Bookmarks">📑 Bookmarks</div>
+							<div class="qa-item" data-target="SideApps">🧩 Side Apps</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="section-title">⭐ Favorites</div>
+						<div id="favoritesList" class="qa-list"></div>
+						<div id="favoritesEmpty" class="favorites-empty">Nothing Favorited Yet</div>
+					</div>
+					<div class="card">
+						<div class="section-title">📑 Bookmarks (demo / in-memory)</div>
+						<div class="qa-list" id="bookmarks"></div>
+					</div>
+					<div class="card">
+						<div class="section-title">🧩 Side Apps (demo / in-memory)</div>
+						<div class="qa-list" id="sideapps"></div>
+					</div>
+				</aside>
+
+				<!-- Main file list -->
+				<section class="fileview">
 					<table>
 						<thead>
 							<tr>
-								<th style="width:50%">Name</th>
+								<th style="width:52%">Name</th>
 								<th style="width:15%">Size</th>
 								<th style="width:15%">Type</th>
-								<th style="width:20%">Date Modified</th>
+								<th style="width:18%">Date Modified</th>
 							</tr>
 						</thead>
 						<tbody id="rows"></tbody>
 					</table>
-				</div>
+				</section>
 			</div>
-			<div class="sidebar">
-				<div style="margin-bottom:14px;">
-					<div class="section-title">📑 Bookmarks (demo / in-memory)</div>
-					<div class="list" id="bookmarks"></div>
-				</div>
-				<div>
-					<div class="section-title">🧩 Side Apps (demo / in-memory)</div>
-					<div class="list" id="sideapps"></div>
-				</div>
-			</div>
-		</div>
 
 		<div class="footer">
 			<p>Tip: To publish this page via GitHub Pages, enable Pages in your repo settings and select the branch/folder that contains this <code>index.html</code>.</p>
@@ -121,15 +169,25 @@
 		// -------- Demo dataset (no saving) --------
 		const now = new Date();
 		const gb = 1024**3;
-		const sampleFS = {
+			const sampleFS = {
 			path: "/",
 			type: "Folder",
 			mtime: now,
 			children: [
-				{ name: "Documents", type: "Folder", mtime: daysAgo(3), children: [
+					{ name: "Desktop", type: "Folder", mtime: daysAgo(6), children: [
+						{ name: "continue_working.txt", type:"File", size: 2, mtime: daysAgo(40) },
+						{ name: "notes.log", type:"File", size: 2200, mtime: daysAgo(40) }
+					]},
+					{ name: "Documents", type: "Folder", mtime: daysAgo(3), children: [
 					{ name: "Resume.docx", type:"File", size: 256*1024, mtime: daysAgo(10) },
 					{ name: "Budget.xlsx", type:"File", size: 3.2*1024*1024, mtime: daysAgo(12) },
 				]},
+					{ name: "Downloads", type: "Folder", mtime: daysAgo(2), children: [
+						{ name: "installer.msi", type:"File", size: 1017*1024*1024, mtime: daysAgo(2) }
+					]},
+					{ name: "Pictures", type: "Folder", mtime: daysAgo(8), children: [
+						{ name: "holiday.jpg", type:"File", size: 8.37*1024*1024, mtime: daysAgo(8) }
+					]},
 				{ name: "Videos", type: "Folder", mtime: daysAgo(1), children: [
 					{ name: "trip.mp4", type:"File", size: 7.8*gb, mtime: daysAgo(2) },
 					{ name: "event.mov", type:"File", size: 52*gb, mtime: daysAgo(2) }, // 50+ GB band
@@ -137,6 +195,9 @@
 				{ name: "BigData", type: "Folder", mtime: daysAgo(2), children: [
 					{ name: "dataset.bin", type:"File", size: 120*gb, mtime: daysAgo(2) }, // 100+ GB band
 				]},
+					{ name: "Music", type: "Folder", mtime: daysAgo(1), children: [
+						{ name: "track.flac", type:"File", size: 111*1024*1024, mtime: daysAgo(4) }
+					]},
 				{ name: "setup.exe", type: "File", size: 310*1024*1024, mtime: daysAgo(5) },
 				{ name: "photo.png", type: "File", size: 3.1*1024*1024, mtime: daysAgo(8) }
 			]
@@ -200,6 +261,8 @@
 		const searchEl = document.getElementById('search');
 		const bookmarksEl = document.getElementById('bookmarks');
 		const sideappsEl = document.getElementById('sideapps');
+		const favoritesListEl = document.getElementById('favoritesList');
+		const favoritesEmptyEl = document.getElementById('favoritesEmpty');
 
 		function pathOf(node){
 			const parts=[]; let cur=node; while (cur && cur!==sampleFS){ parts.unshift(cur.name); cur=cur.parent; }
@@ -221,8 +284,11 @@
 				// Name
 				const nameTd = document.createElement('td');
 				nameTd.className = 'name';
-				const nameLink = document.createElement('a');
-				nameLink.href = '#'; nameLink.textContent = item.name;
+						const nameLink = document.createElement('a');
+						nameLink.href = '#';
+						const icon = document.createElement('span'); icon.className='icon'; icon.textContent = item.type==='Folder'?'📁':'📄';
+						const label = document.createElement('span'); label.textContent = item.name;
+						nameLink.append(icon, label);
 				nameLink.addEventListener('click', (e)=>{ e.preventDefault(); if(item.type==='Folder'){ historyStack.push(cwd); cwd=item; render(); }});
 				const addBtns = document.createElement('span');
 				addBtns.innerHTML = `
@@ -272,19 +338,49 @@
 			return 'File';
 		}
 
-		function renderSideLists(){
-			bookmarksEl.innerHTML = bookmarks.map((b,i)=>`<button class="pill" title="Remove" onclick="removeBookmark(${i})">⭐ ${b.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
-			sideappsEl.innerHTML = sideapps.map((s,i)=>`<button class="pill" title="Remove" onclick="removeSideApp(${i})">🧩 ${s.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
-		}
+			function renderSideLists(){
+				bookmarksEl.innerHTML = bookmarks.map((b,i)=>`<button class="pill" title="Remove" onclick="removeBookmark(${i})">⭐ ${b.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+				sideappsEl.innerHTML = sideapps.map((s,i)=>`<button class="pill" title="Remove" onclick="removeSideApp(${i})">🧩 ${s.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+				const favsHtml = favorites.map((f,i)=>`<div class="qa-item" title="Remove" onclick="removeFavorite(${i})">⭐ ${f.name}<span style="margin-left:auto;opacity:.6;">×</span></div>`).join('');
+				favoritesListEl.innerHTML = favsHtml;
+				favoritesEmptyEl.style.display = favorites.length ? 'none' : 'block';
+			}
 		window.removeBookmark = (i)=>{ bookmarks.splice(i,1); renderSideLists(); }
 		window.removeSideApp = (i)=>{ sideapps.splice(i,1); renderSideLists(); }
+			window.removeFavorite = (i)=>{ favorites.splice(i,1); renderSideLists(); }
 
 		// -------- Navigation & events --------
-		document.getElementById('backBtn').onclick = ()=>{ if (historyStack.length){ cwd = historyStack.pop(); render(); } };
+			document.getElementById('backBtn').onclick = ()=>{ if (historyStack.length){ cwd = historyStack.pop(); render(); } };
+			document.getElementById('forwardBtn').onclick = ()=>{ alert('Demo: Forward history not implemented'); };
 		document.getElementById('upBtn').onclick = ()=>{ if (cwd.parent){ historyStack.push(cwd); cwd = cwd.parent; render(); } };
 		document.getElementById('refreshBtn').onclick = ()=>{ render(); };
 		addressEl.addEventListener('change', ()=>{ /* demo: address is read-only visual */ render(); });
 		searchEl.addEventListener('input', ()=> render());
+
+			// Favorites demo wiring
+			const favorites = [];
+			document.getElementById('favBtn').onclick = ()=>{
+				const sel = (cwd.children||[])[0];
+				if (!sel) return alert('Demo: no item to favorite in this folder');
+				favorites.push({ name: sel.name, node: sel });
+				renderSideLists();
+			};
+			document.getElementById('newFolder').onclick = ()=> alert('Demo: New Folder (no save)');
+			document.getElementById('copyBtn').onclick = ()=> alert('Demo: Copy');
+			document.getElementById('cutBtn').onclick = ()=> alert('Demo: Cut');
+			document.getElementById('pasteBtn').onclick = ()=> alert('Demo: Paste');
+			document.getElementById('renameBtn').onclick = ()=> alert('Demo: Rename');
+			document.getElementById('deleteBtn').onclick = ()=> alert('Demo: Delete');
+
+			// Quick Access navigation
+			document.querySelectorAll('.qa-item').forEach(el=>{
+				el.addEventListener('click', ()=>{
+					const t = el.getAttribute('data-target');
+					if (t==='Bookmarks' || t==='SideApps') return; // demo lists on sidebar only
+					const target = (sampleFS.children||[]).find(ch=>ch.name===t);
+					if (target){ historyStack.push(cwd); cwd = target; render(); }
+				});
+			});
 
 		render();
 		renderSideLists();

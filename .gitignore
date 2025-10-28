@@ -26,3 +26,7 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# App runtime data and logs (keep locally, ignore in Git)
+app-code/data/
+app-code/log/
