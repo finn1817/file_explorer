@@ -52,10 +52,15 @@
 			th, td { text-align:left; padding: 10px 12px; border-bottom:1px solid var(--border-2); }
 			thead th { color: var(--muted); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03)); position: sticky; top: 0; backdrop-filter: blur(4px); }
 			tr:hover td { background: rgba(255,255,255,0.02); }
+			tr.selected td { background: rgba(92,200,255,0.08); }
 			.name { display:flex; align-items:center; gap:10px; }
 			.icon { width:18px; height:18px; display:inline-grid; place-items:center; background: #1c212c; border:1px solid var(--border-2); border-radius:6px; font-size:12px; }
 			.band { color: var(--warn); }
 			@media (max-width: 980px) { .layout { grid-template-columns: 1fr; } }
+
+			/* Toast */
+			#toast { position: fixed; right: 18px; bottom: 18px; background: var(--panel); border:1px solid var(--border); color: var(--text); padding:10px 12px; border-radius:10px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); opacity:0; transform: translateY(8px); transition: all .22s ease; pointer-events:none; }
+			#toast.show { opacity:1; transform: translateY(0); }
 		</style>
 </head>
 <body>
@@ -166,50 +171,57 @@
 	</div>
 
 	<script>
-		// -------- Demo dataset (no saving) --------
-		const now = new Date();
-		const gb = 1024**3;
-			const sampleFS = {
-			path: "/",
-			type: "Folder",
-			mtime: now,
-			children: [
-					{ name: "Desktop", type: "Folder", mtime: daysAgo(6), children: [
-						{ name: "continue_working.txt", type:"File", size: 2, mtime: daysAgo(40) },
-						{ name: "notes.log", type:"File", size: 2200, mtime: daysAgo(40) }
-					]},
-					{ name: "Documents", type: "Folder", mtime: daysAgo(3), children: [
-					{ name: "Resume.docx", type:"File", size: 256*1024, mtime: daysAgo(10) },
-					{ name: "Budget.xlsx", type:"File", size: 3.2*1024*1024, mtime: daysAgo(12) },
-				]},
-					{ name: "Downloads", type: "Folder", mtime: daysAgo(2), children: [
-						{ name: "installer.msi", type:"File", size: 1017*1024*1024, mtime: daysAgo(2) }
-					]},
-					{ name: "Pictures", type: "Folder", mtime: daysAgo(8), children: [
-						{ name: "holiday.jpg", type:"File", size: 8.37*1024*1024, mtime: daysAgo(8) }
-					]},
-				{ name: "Videos", type: "Folder", mtime: daysAgo(1), children: [
-					{ name: "trip.mp4", type:"File", size: 7.8*gb, mtime: daysAgo(2) },
-					{ name: "event.mov", type:"File", size: 52*gb, mtime: daysAgo(2) }, // 50+ GB band
-				]},
-				{ name: "BigData", type: "Folder", mtime: daysAgo(2), children: [
-					{ name: "dataset.bin", type:"File", size: 120*gb, mtime: daysAgo(2) }, // 100+ GB band
-				]},
-					{ name: "Music", type: "Folder", mtime: daysAgo(1), children: [
-						{ name: "track.flac", type:"File", size: 111*1024*1024, mtime: daysAgo(4) }
-					]},
-				{ name: "setup.exe", type: "File", size: 310*1024*1024, mtime: daysAgo(5) },
-				{ name: "photo.png", type: "File", size: 3.1*1024*1024, mtime: daysAgo(8) }
-			]
-		};
-
+		// -------- Helpers to build demo data --------
 		function daysAgo(n){ const d=new Date(); d.setDate(d.getDate()-n); return d; }
+		const gb = 1024**3; const mb = 1024**2;
+		function file(name, sizeBytes, mtimeDays){ return { name, type:'File', size: Math.trunc(sizeBytes), mtime: daysAgo(mtimeDays??1) }; }
+		function folder(name, children, mtimeDays){ return { name, type:'Folder', mtime: daysAgo(mtimeDays??1), children: children||[] }; }
+		function seq(n, fn){ const out=[]; for(let i=0;i<n;i++) out.push(fn(i)); return out; }
+		function uniqueName(base, siblings){ let name=base; const exists=new Set((siblings||[]).map(s=>s.name.toLowerCase())); if(!exists.has(name.toLowerCase())) return name; let k=2; while(exists.has(`${base} (${k})`.toLowerCase())) k++; return `${base} (${k})`; }
+
+		// -------- Demo dataset (no saving) --------
+		const sampleFS = folder('/', [
+			folder('Desktop', [
+				file('Continue Working.txt', 2*mb, 40),
+				file('Notes.log', 2200, 40),
+				folder('Screenshots', seq(12, i=> file(`Screenshot ${i+1}.png`, (1.2+i*0.1)*mb, 5)))
+			], 6),
+			folder('Documents', [
+				folder('Reports', seq(12, i=> file(`Report Q${i+1}.docx`, (500+i*30)*1024, 10))),
+				folder('Spreadsheets', seq(8, i=> file(`Budget_${2020+i}.xlsx`, (2+i*0.3)*mb, 12))),
+				file('Project Plan.docx', 1.8*mb, 9)
+			], 3),
+			folder('Downloads', [
+				file('installer.msi', 1017*mb, 2),
+				file('driver.zip', 420*mb, 1),
+				file('manual.pdf', 7*mb, 3)
+			], 2),
+			folder('Pictures', [
+				folder('Holidays', seq(15, i=> file(`IMG_${String(i+1).padStart(4,'0')}.jpg`, (3+i*0.2)*mb, 8))),
+				file('wallpaper.png', 6.5*mb, 8)
+			], 8),
+			folder('Videos', [
+				file('trip.mp4', 7.8*gb, 2),
+				file('event.mov', 52*gb, 2),
+				file('lecture.mkv', 26*gb, 7)
+			], 1),
+			folder('BigData', [ file('dataset.bin', 120*gb, 2) ], 2),
+			folder('Music', [
+				folder('Artist A', seq(10, i=> file(`Track_${i+1}.flac`, (80+i*2)*mb, 4))),
+				folder('Artist B', seq(8, i=> file(`Song_${i+1}.mp3`, (6+i*0.5)*mb, 3)))
+			], 1),
+			folder('Program Files', [ folder('SampleApp', [file('SampleApp.exe', 45*mb, 100), file('readme.txt', 8*1024, 100)]) ], 120),
+			folder('Windows', [file('system32_placeholder.dll', 2*mb, 200)], 200),
+			folder('Temp', seq(20, i=> file(`tmp_${i}.tmp`, 10*1024 + i*512, 0)), 0)
+		]);
 
 		// In-memory demo state
-		let cwd = sampleFS; // current folder node
-		let bookmarks = [];
-		let sideapps = [];
+		let cwd = sampleFS.children.find(c=>c.name==='Desktop') || sampleFS; // start at Desktop for a fuller first view
+		let bookmarks = [ { name:'Work Docs', node: sampleFS.children.find(c=>c.name==='Documents') } ];
+		let sideapps = [ { name:'SampleApp', node: sampleFS.children.find(c=>c.name==='Program Files').children[0] } ];
 		let historyStack = [];
+		let forwardStack = [];
+		let selected = null;
 		const folderSizeCache = new Map();
 
 		// -------- Size formatting & banding (mirrors app rules) --------
@@ -264,6 +276,12 @@
 		const favoritesListEl = document.getElementById('favoritesList');
 		const favoritesEmptyEl = document.getElementById('favoritesEmpty');
 
+		// Toast element
+		const toastEl = document.createElement('div');
+		toastEl.id = 'toast';
+		document.body.appendChild(toastEl);
+		function toast(msg){ toastEl.textContent = msg; toastEl.classList.add('show'); setTimeout(()=>toastEl.classList.remove('show'), 1400); }
+
 		function pathOf(node){
 			const parts=[]; let cur=node; while (cur && cur!==sampleFS){ parts.unshift(cur.name); cur=cur.parent; }
 			return '/' + parts.join('/');
@@ -281,24 +299,27 @@
 			rowsEl.innerHTML = '';
 			for (const item of children){
 				const tr = document.createElement('tr');
+				if (item===selected) tr.classList.add('selected');
 				// Name
 				const nameTd = document.createElement('td');
 				nameTd.className = 'name';
-						const nameLink = document.createElement('a');
-						nameLink.href = '#';
-						const icon = document.createElement('span'); icon.className='icon'; icon.textContent = item.type==='Folder'?'📁':'📄';
-						const label = document.createElement('span'); label.textContent = item.name;
-						nameLink.append(icon, label);
-				nameLink.addEventListener('click', (e)=>{ e.preventDefault(); if(item.type==='Folder'){ historyStack.push(cwd); cwd=item; render(); }});
+					const nameLink = document.createElement('a');
+					nameLink.href = '#';
+					const icon = document.createElement('span'); icon.className='icon'; icon.textContent = item.type==='Folder'?'📁':'📄';
+					const label = document.createElement('span'); label.textContent = item.name;
+					nameLink.append(icon, label);
+				nameLink.addEventListener('click', (e)=>{ e.preventDefault(); if(item.type==='Folder'){ navigateTo(item); } });
+				tr.addEventListener('click', ()=>{ selected = item; render(); });
+				tr.addEventListener('dblclick', ()=>{ if(item.type==='Folder') navigateTo(item); else toast(`Demo: Would open ${item.name}`); });
 				const addBtns = document.createElement('span');
 				addBtns.innerHTML = `
 					<button class="pill" title="Add to Bookmarks">⭐</button>
 					<button class="pill" title="Add to Side Apps">🧩</button>
 					${item.type==='File' ? '<button class="pill" title="Run (demo)">▶️</button>' : ''}
 				`;
-				addBtns.querySelectorAll('button')[0].onclick = ()=>{ bookmarks.push(item); renderSideLists(); };
-				addBtns.querySelectorAll('button')[1].onclick = ()=>{ sideapps.push(item); renderSideLists(); };
-				if (item.type==='File') addBtns.querySelectorAll('button')[2].onclick = ()=>{ alert(`Demo: Would run ${item.name}`); };
+				addBtns.querySelectorAll('button')[0].onclick = ()=>{ bookmarks.push({ name:item.name, node:item }); renderSideLists(); toast('Added to Bookmarks'); };
+				addBtns.querySelectorAll('button')[1].onclick = ()=>{ sideapps.push({ name:item.name, node:item }); renderSideLists(); toast('Added to Side Apps'); };
+				if (item.type==='File') addBtns.querySelectorAll('button')[2].onclick = ()=>{ toast(`Demo: Would run ${item.name}`); };
 				nameTd.append(nameLink, addBtns);
 				tr.appendChild(nameTd);
 				// Size
@@ -339,48 +360,82 @@
 		}
 
 			function renderSideLists(){
-				bookmarksEl.innerHTML = bookmarks.map((b,i)=>`<button class="pill" title="Remove" onclick="removeBookmark(${i})">⭐ ${b.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
-				sideappsEl.innerHTML = sideapps.map((s,i)=>`<button class="pill" title="Remove" onclick="removeSideApp(${i})">🧩 ${s.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
-				const favsHtml = favorites.map((f,i)=>`<div class="qa-item" title="Remove" onclick="removeFavorite(${i})">⭐ ${f.name}<span style="margin-left:auto;opacity:.6;">×</span></div>`).join('');
+				bookmarksEl.innerHTML = bookmarks.map((b,i)=>`<button class="pill" title="Go / Remove" onclick="openBookmark(${i})">⭐ ${b.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+				sideappsEl.innerHTML = sideapps.map((s,i)=>`<button class="pill" title="Run / Remove" onclick="openSideApp(${i})">🧩 ${s.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+				const favsHtml = favorites.map((f,i)=>`<div class="qa-item" title="Go / Remove" onclick="openFavorite(${i})">⭐ ${f.name}<span style="margin-left:auto;opacity:.6;">×</span></div>`).join('');
 				favoritesListEl.innerHTML = favsHtml;
 				favoritesEmptyEl.style.display = favorites.length ? 'none' : 'block';
 			}
-		window.removeBookmark = (i)=>{ bookmarks.splice(i,1); renderSideLists(); }
-		window.removeSideApp = (i)=>{ sideapps.splice(i,1); renderSideLists(); }
-			window.removeFavorite = (i)=>{ favorites.splice(i,1); renderSideLists(); }
+		window.openBookmark = (i)=>{ const b=bookmarks[i]; if(!b) return; if(event && event.target && event.target.textContent===' ×'){ bookmarks.splice(i,1); renderSideLists(); return; } navigateToParentOf(b.node); toast('Opened bookmark'); }
+		window.openSideApp = (i)=>{ const s=sideapps[i]; if(!s) return; if(event && event.target && event.target.textContent===' ×'){ sideapps.splice(i,1); renderSideLists(); return; } toast(`Demo: Would run ${s.name}`); }
+		window.openFavorite = (i)=>{ const f=favorites[i]; if(!f) return; if(event && event.target && event.target.textContent==='×'){ favorites.splice(i,1); renderSideLists(); return; } navigateToParentOf(f.node); selected = f.node; render(); }
 
 		// -------- Navigation & events --------
-			document.getElementById('backBtn').onclick = ()=>{ if (historyStack.length){ cwd = historyStack.pop(); render(); } };
-			document.getElementById('forwardBtn').onclick = ()=>{ alert('Demo: Forward history not implemented'); };
-		document.getElementById('upBtn').onclick = ()=>{ if (cwd.parent){ historyStack.push(cwd); cwd = cwd.parent; render(); } };
-		document.getElementById('refreshBtn').onclick = ()=>{ render(); };
+			document.getElementById('backBtn').onclick = ()=>{ if (historyStack.length){ forwardStack.push(cwd); cwd = historyStack.pop(); selected=null; render(); } else toast('No back history'); };
+			document.getElementById('forwardBtn').onclick = ()=>{ if (forwardStack.length){ historyStack.push(cwd); cwd = forwardStack.pop(); selected=null; render(); } else toast('No forward history'); };
+		document.getElementById('upBtn').onclick = ()=>{ if (cwd.parent){ historyStack.push(cwd); forwardStack.length=0; cwd = cwd.parent; selected=null; render(); } else toast('Already at root'); };
+		document.getElementById('refreshBtn').onclick = ()=>{ render(); toast('Refreshed'); };
 		addressEl.addEventListener('change', ()=>{ /* demo: address is read-only visual */ render(); });
 		searchEl.addEventListener('input', ()=> render());
 
-			// Favorites demo wiring
+			// Favorites demo wiring and actions
 			const favorites = [];
 			document.getElementById('favBtn').onclick = ()=>{
-				const sel = (cwd.children||[])[0];
-				if (!sel) return alert('Demo: no item to favorite in this folder');
+				const sel = selected || (cwd.children||[])[0];
+				if (!sel) return toast('Nothing to favorite here');
 				favorites.push({ name: sel.name, node: sel });
-				renderSideLists();
+				renderSideLists(); toast('Added to Favorites');
 			};
-			document.getElementById('newFolder').onclick = ()=> alert('Demo: New Folder (no save)');
-			document.getElementById('copyBtn').onclick = ()=> alert('Demo: Copy');
-			document.getElementById('cutBtn').onclick = ()=> alert('Demo: Cut');
-			document.getElementById('pasteBtn').onclick = ()=> alert('Demo: Paste');
-			document.getElementById('renameBtn').onclick = ()=> alert('Demo: Rename');
-			document.getElementById('deleteBtn').onclick = ()=> alert('Demo: Delete');
+			let clipboard = { items: [], cut:false, from:null };
+			document.getElementById('newFolder').onclick = ()=>{ const name = uniqueName('New Folder', cwd.children||[]); (cwd.children||=[]).push(folder(name, [])); selected = (cwd.children||[]).find(ch=>ch.name===name); render(); toast(`Created ${name}`); };
+			document.getElementById('copyBtn').onclick = ()=>{ if(!selected) return toast('Select an item to copy'); clipboard={ items:[selected], cut:false, from:selected.parent }; toast(`Copied ${selected.name}`); };
+			document.getElementById('cutBtn').onclick = ()=>{ if(!selected) return toast('Select an item to cut'); clipboard={ items:[selected], cut:true, from:selected.parent }; toast(`Cut ${selected.name}`); };
+			document.getElementById('pasteBtn').onclick = ()=>{
+				if(!clipboard.items.length) return toast('Clipboard is empty');
+				const item = clipboard.items[0];
+				if(clipboard.cut){
+					const idx = clipboard.from.children.indexOf(item);
+					if(idx>=0) clipboard.from.children.splice(idx,1);
+					item.parent = cwd;
+					item.name = uniqueName(item.name, cwd.children||[]);
+					(cwd.children||=[]).push(item);
+					clipboard = { items:[], cut:false, from:null };
+					selected = item; render(); toast('Moved item');
+				}else{
+					const clone = deepClone(item);
+					clone.name = uniqueName(item.name + ' - Copy', cwd.children||[]);
+					clone.parent = cwd;
+					(cwd.children||[]).push(clone);
+					selected = clone; render(); toast('Pasted copy');
+				}
+			};
+			document.getElementById('renameBtn').onclick = ()=>{
+				if(!selected) return toast('Select an item to rename');
+				const newName = prompt('Rename to:', selected.name);
+				if(!newName || newName===selected.name) return;
+				selected.name = uniqueName(newName, selected.parent.children||[]);
+				render(); toast('Renamed');
+			};
+			document.getElementById('deleteBtn').onclick = ()=>{
+				if(!selected) return toast('Select an item to delete');
+				const arr = selected.parent.children||[]; const idx = arr.indexOf(selected); if(idx>=0) arr.splice(idx,1);
+				toast(`Deleted ${selected.name}`); selected=null; render();
+			};
 
 			// Quick Access navigation
 			document.querySelectorAll('.qa-item').forEach(el=>{
 				el.addEventListener('click', ()=>{
 					const t = el.getAttribute('data-target');
 					if (t==='Bookmarks' || t==='SideApps') return; // demo lists on sidebar only
-					const target = (sampleFS.children||[]).find(ch=>ch.name===t);
-					if (target){ historyStack.push(cwd); cwd = target; render(); }
+					const target = findByName(sampleFS, t);
+					if (target){ navigateTo(target); }
 				});
 			});
+
+		function deepClone(node){ return JSON.parse(JSON.stringify(node)); }
+		function findByName(node, name){ if(node.name===name) return node; if(!node.children) return null; for(const ch of node.children){ const f=findByName(ch, name); if(f) return f; } return null; }
+		function navigateToParentOf(node){ if(!node || !node.parent) return; navigateTo(node.parent); selected = node; render(); }
+		function navigateTo(target){ if(!target) return; historyStack.push(cwd); forwardStack.length=0; cwd = target; selected=null; render(); }
 
 		render();
 		renderSideLists();
