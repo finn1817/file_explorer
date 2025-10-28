@@ -30,3 +30,11 @@ dist/
 # App runtime data and logs (keep locally, ignore in Git)
 app-code/data/
 app-code/log/
+app-code/Bookmarks/
+app-code/SideApps/
+
+# backup case just in case
+data/
+log/
+Bookmarks/
+SideApps/
