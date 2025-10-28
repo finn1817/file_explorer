@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Liquid Glass File Explorer — Overview + Simple Demo</title>
+	<style>
+		:root {
+			--bg: #0f1115;
+			--panel: #171a21;
+			--text: #e7ecf3;
+			--muted: #a8b3c3;
+			--accent: #5cc8ff;
+			--accent-2: #a78bfa;
+			--ok: #34d399;
+			--warn: #f59e0b;
+		}
+		html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--text); font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+		a { color: var(--accent); text-decoration: none; }
+		a:hover { text-decoration: underline; }
+		.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+		header { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom: 16px; }
+		header h1 { font-size: 1.4rem; margin: 0; }
+		.card { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+		.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+		.muted { color: var(--muted); }
+		.toolbar { display:flex; align-items:center; gap:8px; flex-wrap: wrap; padding: 8px; background: var(--panel); border-radius: 10px; border:1px solid rgba(255,255,255,0.06); }
+		.toolbar input[type="text"] { flex:1; min-width: 200px; padding: 8px 10px; background:#0c0f14; color:var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:8px; }
+		.toolbar button, .pill { padding:8px 10px; background:#0c0f14; color:var(--text); border:1px solid rgba(255,255,255,0.08); border-radius:8px; cursor:pointer; }
+		.toolbar button:hover { background:#10141a; }
+		.pill { font-size: 12px; }
+		.row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
+		.fileview { background: var(--panel); border-radius: 10px; border:1px solid rgba(255,255,255,0.06); overflow: hidden; }
+		table { width:100%; border-collapse: collapse; }
+		th, td { text-align:left; padding: 10px 12px; border-bottom:1px solid rgba(255,255,255,0.06); }
+		th { color: var(--muted); background: rgba(255,255,255,0.03); position: sticky; top: 0; backdrop-filter: blur(4px); }
+		tr:hover td { background: rgba(255,255,255,0.02); }
+		.name { display:flex; align-items:center; gap:10px; }
+		.badge { display:inline-block; padding:2px 6px; border-radius:6px; font-size:12px; border:1px solid rgba(255,255,255,0.12); color: var(--muted); }
+		.band { color: var(--warn); }
+		.sidebar { background: var(--panel); border-radius: 10px; padding: 12px; border:1px solid rgba(255,255,255,0.06); }
+		.section-title { font-weight:600; font-size: 0.95rem; margin: 0 0 8px; color: var(--muted); }
+		.list { display:flex; flex-direction: column; gap: 6px; }
+		.list button { justify-content: space-between; display:flex; align-items:center; }
+		.footer { margin-top: 24px; color: var(--muted); font-size: 13px; }
+		@media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<header>
+			<h1>Liquid Glass File Explorer — Overview + Simple Demo</h1>
+			<nav class="row">
+				<a href="schema.html" class="pill">Schema</a>
+				<a href="#demo" class="pill">Jump to Demo</a>
+			</nav>
+		</header>
+
+		<div class="card" style="margin-bottom:16px;">
+			<p class="muted">A modern PyQt6 desktop file explorer with:
+			</p>
+			<ul>
+				<li>Fit-to-screen window and movable toolbars</li>
+				<li>Explorer-like columns (Name, Size, Type, Date Modified)</li>
+				<li>Accurate file size formatting; folder sizes computed async and cached</li>
+				<li>Large-size banding: precise below 25 GB; 25+ GB, 50+ GB, 100+ GB above</li>
+				<li>Bookmarks and Side Apps (managed folders) + run-on-start</li>
+				<li>Search filters within the current folder (no root jump)</li>
+				<li>JSON-backed data in <code>app-code/data</code>; no .pyc on disk</li>
+			</ul>
+			<p class="muted">This page includes a zero-save, browser-only demo that mimics the UI behavior using sample data.</p>
+		</div>
+
+		<h2 id="demo" style="margin:12px 0">Simple Demo (no saving)</h2>
+		<div class="grid">
+			<div class="card">
+				<div class="toolbar" id="topbar">
+					<button id="backBtn">⬅ Back</button>
+					<button id="upBtn">⬆ Up</button>
+					<button id="refreshBtn">🔄 Refresh</button>
+					<input id="address" type="text" placeholder="Address" />
+					<input id="search" type="text" placeholder="Search in current folder" />
+				</div>
+				<div class="row" style="margin:8px 0;">
+					<span class="badge">Movable toolbar in app</span>
+					<span class="badge">Async folder sizes in app</span>
+					<span class="badge">No writes in this demo</span>
+				</div>
+				<div class="fileview">
+					<table>
+						<thead>
+							<tr>
+								<th style="width:50%">Name</th>
+								<th style="width:15%">Size</th>
+								<th style="width:15%">Type</th>
+								<th style="width:20%">Date Modified</th>
+							</tr>
+						</thead>
+						<tbody id="rows"></tbody>
+					</table>
+				</div>
+			</div>
+			<div class="sidebar">
+				<div style="margin-bottom:14px;">
+					<div class="section-title">📑 Bookmarks (demo / in-memory)</div>
+					<div class="list" id="bookmarks"></div>
+				</div>
+				<div>
+					<div class="section-title">🧩 Side Apps (demo / in-memory)</div>
+					<div class="list" id="sideapps"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+			<p>Tip: To publish this page via GitHub Pages, enable Pages in your repo settings and select the branch/folder that contains this <code>index.html</code>.</p>
+		</div>
+	</div>
+
+	<script>
+		// -------- Demo dataset (no saving) --------
+		const now = new Date();
+		const gb = 1024**3;
+		const sampleFS = {
+			path: "/",
+			type: "Folder",
+			mtime: now,
+			children: [
+				{ name: "Documents", type: "Folder", mtime: daysAgo(3), children: [
+					{ name: "Resume.docx", type:"File", size: 256*1024, mtime: daysAgo(10) },
+					{ name: "Budget.xlsx", type:"File", size: 3.2*1024*1024, mtime: daysAgo(12) },
+				]},
+				{ name: "Videos", type: "Folder", mtime: daysAgo(1), children: [
+					{ name: "trip.mp4", type:"File", size: 7.8*gb, mtime: daysAgo(2) },
+					{ name: "event.mov", type:"File", size: 52*gb, mtime: daysAgo(2) }, // 50+ GB band
+				]},
+				{ name: "BigData", type: "Folder", mtime: daysAgo(2), children: [
+					{ name: "dataset.bin", type:"File", size: 120*gb, mtime: daysAgo(2) }, // 100+ GB band
+				]},
+				{ name: "setup.exe", type: "File", size: 310*1024*1024, mtime: daysAgo(5) },
+				{ name: "photo.png", type: "File", size: 3.1*1024*1024, mtime: daysAgo(8) }
+			]
+		};
+
+		function daysAgo(n){ const d=new Date(); d.setDate(d.getDate()-n); return d; }
+
+		// In-memory demo state
+		let cwd = sampleFS; // current folder node
+		let bookmarks = [];
+		let sideapps = [];
+		let historyStack = [];
+		const folderSizeCache = new Map();
+
+		// -------- Size formatting & banding (mirrors app rules) --------
+		function humanSize(bytes){
+			if (bytes == null) return "–";
+			if (bytes < 1024) return `${Math.trunc(bytes)} B`;
+			const units = ["KB","MB","GB","TB","PB"]; let s=bytes/1024; let i=0;
+			while (s >= 1024 && i < units.length-1) { s/=1024; i++; }
+			if (s < 10) return `${s.toFixed(2)} ${units[i]}`;
+			if (s < 100) return `${s.toFixed(1)} ${units[i]}`;
+			return `${s.toFixed(0)} ${units[i]}`;
+		}
+		function bandLabel(bytes){
+			if (bytes >= 100*gb) return "100+ GB";
+			if (bytes >= 50*gb) return "50+ GB";
+			if (bytes >= 25*gb) return "25+ GB";
+			return "";
+		}
+		function displaySize(bytes){
+			if (bytes < 25*gb) return humanSize(bytes);
+			return bandLabel(bytes);
+		}
+
+		// -------- Folder size (demo async + cache) --------
+		function computeFolderSize(node){
+			// Simulate async compute and cache
+			if (folderSizeCache.has(node)) return Promise.resolve(folderSizeCache.get(node));
+			return new Promise(resolve => {
+				setTimeout(() => {
+					const total = sumFolder(node);
+					folderSizeCache.set(node, total);
+					resolve(total);
+				}, 200); // small delay to show "…"
+			});
+		}
+		function sumFolder(node){
+			if (!node.children) return 0;
+			let total = 0;
+			for (const ch of node.children){
+				if (ch.type === "File") total += Math.trunc(ch.size || 0);
+				else total += sumFolder(ch);
+			}
+			return total;
+		}
+
+		// -------- Rendering --------
+		const rowsEl = document.getElementById('rows');
+		const addressEl = document.getElementById('address');
+		const searchEl = document.getElementById('search');
+		const bookmarksEl = document.getElementById('bookmarks');
+		const sideappsEl = document.getElementById('sideapps');
+
+		function pathOf(node){
+			const parts=[]; let cur=node; while (cur && cur!==sampleFS){ parts.unshift(cur.name); cur=cur.parent; }
+			return '/' + parts.join('/');
+		}
+		function setParents(node){
+			if (!node.children) return;
+			for (const ch of node.children){ ch.parent = node; if (ch.type === 'Folder') setParents(ch); }
+		}
+		setParents(sampleFS);
+
+		function render(){
+			addressEl.value = pathOf(cwd) || '/';
+			const filter = (searchEl.value || '').toLowerCase();
+			const children = (cwd.children||[]).filter(ch => ch.name.toLowerCase().includes(filter));
+			rowsEl.innerHTML = '';
+			for (const item of children){
+				const tr = document.createElement('tr');
+				// Name
+				const nameTd = document.createElement('td');
+				nameTd.className = 'name';
+				const nameLink = document.createElement('a');
+				nameLink.href = '#'; nameLink.textContent = item.name;
+				nameLink.addEventListener('click', (e)=>{ e.preventDefault(); if(item.type==='Folder'){ historyStack.push(cwd); cwd=item; render(); }});
+				const addBtns = document.createElement('span');
+				addBtns.innerHTML = `
+					<button class="pill" title="Add to Bookmarks">⭐</button>
+					<button class="pill" title="Add to Side Apps">🧩</button>
+					${item.type==='File' ? '<button class="pill" title="Run (demo)">▶️</button>' : ''}
+				`;
+				addBtns.querySelectorAll('button')[0].onclick = ()=>{ bookmarks.push(item); renderSideLists(); };
+				addBtns.querySelectorAll('button')[1].onclick = ()=>{ sideapps.push(item); renderSideLists(); };
+				if (item.type==='File') addBtns.querySelectorAll('button')[2].onclick = ()=>{ alert(`Demo: Would run ${item.name}`); };
+				nameTd.append(nameLink, addBtns);
+				tr.appendChild(nameTd);
+				// Size
+				const sizeTd = document.createElement('td');
+				sizeTd.title = '—';
+				if (item.type === 'File'){
+					sizeTd.textContent = displaySize(Math.trunc(item.size||0));
+					sizeTd.title = `Exact size: ${Math.trunc(item.size||0).toLocaleString()} bytes\n(${humanSize(Math.trunc(item.size||0))})` + (bandLabel(item.size) ? `\nBand: ${bandLabel(item.size)}` : '');
+					if (bandLabel(item.size)) sizeTd.classList.add('band');
+				} else {
+					sizeTd.textContent = '…';
+					sizeTd.title = 'Computing folder size…';
+					computeFolderSize(item).then(total=>{
+						sizeTd.textContent = displaySize(total);
+						sizeTd.title = `Exact size: ${total.toLocaleString()} bytes\n(${humanSize(total)})` + (bandLabel(total) ? `\nBand: ${bandLabel(total)}` : '');
+						if (bandLabel(total)) sizeTd.classList.add('band');
+					});
+				}
+				tr.appendChild(sizeTd);
+				// Type
+				const typeTd = document.createElement('td'); typeTd.textContent = item.type === 'Folder' ? 'Folder' : fileTypeFromName(item.name);
+				tr.appendChild(typeTd);
+				// Date Modified
+				const dtTd = document.createElement('td'); dtTd.textContent = fmtDate(item.mtime); tr.appendChild(dtTd);
+				rowsEl.appendChild(tr);
+			}
+		}
+
+		function fmtDate(d){ const dd=new Date(d); return dd.toLocaleString(); }
+		function fileTypeFromName(name){
+			const lower = name.toLowerCase();
+			if (lower.endsWith('.exe')) return 'Executable';
+			if (lower.endsWith('.mp4')||lower.endsWith('.mov')) return 'Video';
+			if (lower.endsWith('.png')||lower.endsWith('.jpg')||lower.endsWith('.jpeg')) return 'Image';
+			if (lower.endsWith('.xlsx')||lower.endsWith('.csv')) return 'Spreadsheet';
+			if (lower.endsWith('.doc')||lower.endsWith('.docx')||lower.endsWith('.rtf')) return 'Document';
+			return 'File';
+		}
+
+		function renderSideLists(){
+			bookmarksEl.innerHTML = bookmarks.map((b,i)=>`<button class="pill" title="Remove" onclick="removeBookmark(${i})">⭐ ${b.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+			sideappsEl.innerHTML = sideapps.map((s,i)=>`<button class="pill" title="Remove" onclick="removeSideApp(${i})">🧩 ${s.name}<span> ×</span></button>`).join('') || '<div class="muted">(none)</div>';
+		}
+		window.removeBookmark = (i)=>{ bookmarks.splice(i,1); renderSideLists(); }
+		window.removeSideApp = (i)=>{ sideapps.splice(i,1); renderSideLists(); }
+
+		// -------- Navigation & events --------
+		document.getElementById('backBtn').onclick = ()=>{ if (historyStack.length){ cwd = historyStack.pop(); render(); } };
+		document.getElementById('upBtn').onclick = ()=>{ if (cwd.parent){ historyStack.push(cwd); cwd = cwd.parent; render(); } };
+		document.getElementById('refreshBtn').onclick = ()=>{ render(); };
+		addressEl.addEventListener('change', ()=>{ /* demo: address is read-only visual */ render(); });
+		searchEl.addEventListener('input', ()=> render());
+
+		render();
+		renderSideLists();
+	</script>
+</body>
+</html>

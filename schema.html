@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Liquid Glass File Explorer — Application Schema</title>
+	<style>
+		body { font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; background: #0f1115; color: #e7ecf3; margin:0; }
+		.container { max-width: 960px; margin: 0 auto; padding: 24px; }
+		a { color: #5cc8ff; text-decoration: none; }
+		a:hover { text-decoration: underline; }
+		h1 { font-size: 1.4rem; margin: 0 0 8px; }
+		h2 { font-size: 1.1rem; margin-top: 24px; border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 6px; color: #a8b3c3; }
+		.card { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+		code, pre { background: #0b0e13; color: #e7ecf3; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; }
+		code { padding: 2px 6px; }
+		pre { padding: 12px; overflow:auto; }
+		.muted { color: #a8b3c3; }
+		.list { line-height: 1.7; }
+		.pill { display:inline-block; padding:4px 8px; border-radius:999px; border:1px solid rgba(255,255,255,0.12); color:#a8b3c3; }
+	</style>
+	<link rel="icon" href="data:,">
+</head>
+<body>
+	<div class="container">
+		<h1>Liquid Glass File Explorer — Application Schema</h1>
+		<p class="muted">High-level structure, data shapes, and component interactions for the desktop app.</p>
+		<p><a href="index.html" class="pill">← Back to Overview + Demo</a></p>
+
+		<h2>Directories</h2>
+		<div class="card">
+			<pre><code>file_explorer/
+├─ app-code/
+│  ├─ python/              # PyQt6 source code
+│  ├─ data/                # JSON data files (user state)
+│  ├─ log/                 # Logs
+│  └─ info/                # Documentation
+├─ index.html              # Overview + Simple Demo (this site)
+└─ schema.html             # This schema page
+</code></pre>
+		</div>
+
+		<h2>Python Modules</h2>
+		<ul class="list">
+			<li><code>python/main.py</code> — Entry point. Creates <code>QApplication</code>, launches <code>FileExplorer</code>, sets High DPI and app icon. Disables .pyc.</li>
+			<li><code>python/file_explorer.py</code> — Main window and UI: toolbars, sidebar, file view. Uses <code>QFileSystemModel</code> + custom <code>QSortFilterProxyModel</code> for:
+				<ul>
+					<li>Columns: Name, Size, Type, Date Modified</li>
+					<li>Type column shows <em>Folder</em> for directories</li>
+					<li>Size: precise human formatting; folders computed in background, cached; size banding (25+/50+/100+ GB)</li>
+					<li>Search filters within current folder; sorting by actual bytes</li>
+				</ul>
+			</li>
+			<li><code>python/data_manager.py</code> — CRUD for all JSON files; in-memory cache for folder size map; automatic backups <code>*.json.bak</code>.</li>
+			<li><code>python/file_operations.py</code> — Copy/move/rename/delete, open/run files, shortcuts handling; executable detection.</li>
+			<li><code>python/settings_dialog.py</code> — Settings UI (theme, fonts, view mode, hidden files, icon size, etc.).</li>
+			<li><code>python/theme.py</code> + <code>styles.py</code> — Theme manager and styles (liquid glass visuals with blur/shadow).</li>
+		</ul>
+
+		<h2>Data files (JSON)</h2>
+		<p class="muted">All located under <code>app-code/data</code>.</p>
+		<div class="card">
+			<h3>favorites.json</h3>
+			<pre><code>[
+	"C:\\Users\\...\\Desktop\\gitApps",
+	"C:\\Users\\...\\Desktop\\MyApps"
+]</code></pre>
+
+			<h3>bookmarks.json</h3>
+			<pre><code>{
+	"Project Root": "C:\\Users\\...\\Desktop\\gitApps",
+	"Music": "C:\\Users\\...\\Music"
+}</code></pre>
+
+			<h3>history.json</h3>
+			<pre><code>[
+	{ "path": "C:\\Users\\...", "timestamp": "2025-10-27T23:14:46.528650" },
+	{ "path": "C:\\Users\\...\\Desktop", "timestamp": "2025-10-27T23:14:52.011855" }
+]</code></pre>
+
+			<h3>recent_files.json</h3>
+			<pre><code>[
+	{ "path": "C:\\Users\\...\\photo.png", "timestamp": "2025-10-27T22:02:01.000Z" }
+]</code></pre>
+
+			<h3>startup.json</h3>
+			<pre><code>[
+	"C:\\Path\\To\\App1.exe",
+	"C:\\Path\\To\\Docs"
+]</code></pre>
+
+			<h3>settings.json</h3>
+			<pre><code>{
+	"theme": "liquid_glass",
+	"font_size": 11,
+	"font_family": "Segoe UI",
+	"view_mode": "list",
+	"icon_size": 32,
+	"show_hidden_files": false,
+	"alternating_rows": true
+}</code></pre>
+
+			<h3>folder_sizes.json</h3>
+			<p class="muted">Map of absolute folder path → { size bytes, mtime, updated }. In-memory cached by the app to avoid repeated reads.</p>
+			<pre><code>{
+	"C:\\Users\\...\\Desktop": { "size": 27403123456, "mtime": 1730000000.123, "updated": "2025-10-28T00:05:31.664" },
+	"C:\\Users\\...\\Music":   { "size": 812345678,   "mtime": 1730002001.456, "updated": "2025-10-28T00:05:33.012" }
+}</code></pre>
+		</div>
+
+		<h2>Managed folders</h2>
+		<ul class="list">
+			<li><code>app-code/Bookmarks/</code> — Synchronized with bookmarks; shell shortcuts may be created.</li>
+			<li><code>app-code/SideApps/</code> — Synchronized with startup items; auto-run after UI is ready.</li>
+		</ul>
+
+		<h2>Key behaviors</h2>
+		<ul class="list">
+			<li><strong>Window:</strong> fits and centers up to 1920×1080 on launch; movable toolbars.</li>
+			<li><strong>Search:</strong> filters within current folder; root remains fixed after filtering.</li>
+			<li><strong>Sizes:</strong> files precise; folders computed async; cache persisted; display bands at ≥25 GB; sort by actual bytes.</li>
+			<li><strong>Safety:</strong> execution prompts for confirmation; delete sends to trash (where supported).</li>
+			<li><strong>Hygiene:</strong> .pyc disabled; data confined to <code>app-code/data</code>.</li>
+		</ul>
+
+		<h2>Simple sequence (folder size)</h2>
+		<ol class="list">
+			<li>View requests Size → proxy model asks DataManager for cached size.</li>
+			<li>If cache valid: format (precise or band) and display.</li>
+			<li>If cache miss: show ellipsis, background thread computes sum of file sizes, writes to cache.</li>
+			<li>UI refresh triggers; tooltip shows exact size; sorting uses the numeric size.</li>
+		</ol>
+
+		<p class="muted">For the web demo version and a narrative overview, see <a href="index.html">index.html</a>.</p>
+	</div>
+</body>
+</html>
