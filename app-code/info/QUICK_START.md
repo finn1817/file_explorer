@@ -1,22 +1,24 @@
-## 🎯 Quick Start Guide
+## 🎯 Quick start
 
 ### How to Run the App
 
-1. **Navigate to the project:**
-   ```
-   cd C:\Users\danny\Desktop\MyApps\File-Explorer\app-code
+1. Go to the project folder:
+   ```powershell
+   cd C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code
    ```
 
-2. **Run using the launcher (easiest):**
-   - Double-click `run.bat`
+2. Run with the launcher (easiest):
+   - Double‑click `run.bat`
    
-3. **Or run from terminal:**
-   ```
+3. Or from a terminal:
+   ```powershell
    cd python
-   python main.py
+   python -B main.py
    ```
 
-### Project Structure at a Glance
+The launcher sets `PYTHONDONTWRITEBYTECODE=1` and uses `-B` so Python doesn’t create `.pyc` files.
+
+### Project structure at a glance
 
 ```
 📁 app-code/
@@ -50,36 +52,39 @@
 │   ├── EXECUTABLE_UPDATE.md
 │   └── ICON_REFERENCE.md
 │
-└── ▶️ run.bat          → Click to launch!
+└── ▶️ run.bat          → Click to launch (no .pyc)
+
+### Requirements
+
+- Windows + Python 3.11 or newer (developed on 3.13)
+- Packages: `PyQt6`, `send2trash`
+   - If needed:
+      ```powershell
+      py -m pip install PyQt6 send2trash
+      ```
 ```
 
-### Common Tasks
+### Common tasks
 
-**📝 Edit code?**
-→ Open files in `python/`
+• Edit code → open files in `python/`.
 
-**🔍 Debug issues?**
-→ Check `log/file_explorer.log`
+• Debug → check `log/file_explorer.log`.
 
-**💾 Backup data?**
-→ Copy `data/` folder
+• Backup → copy the `data/` folder (JSON files). Backups like `*.json.bak` are created automatically on save.
 
-**📖 Read docs?**
-→ Browse `info/` folder
+• Docs → see the `info/` folder.
 
-**🚀 Run app?**
-→ Double-click `run.bat`
+• Run → double‑click `run.bat`.
 
-### Everything Works!
+### Features you’ll notice
 
-✅ Scrollable favorites  
-✅ Run executables (.exe, .bat, .py, .lnk)  
-✅ 60+ file type icons  
-✅ Complete CRUD operations  
-✅ Liquid glass theme  
-✅ Professional organization  
+- Scrollable favorites
+- Run executables (.exe, .bat, .cmd, .ps1, .py, .lnk) with confirmation
+- Dozens of file type icons
+- JSON‑backed data (favorites, settings, history, bookmarks, recent files)
+- Liquid glass theme
 
-### Need Help?
+### Need help?
 
 Check these docs in the `info/` folder:
 - `README.md` - Overview and features
@@ -90,4 +95,4 @@ Check these docs in the `info/` folder:
 
 ---
 
-**Your file explorer is production-ready!** 🎉
+Happy exploring 👋

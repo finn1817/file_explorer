@@ -1,8 +1,8 @@
-# 🎨 File Icon Reference Card
+# 🎨 File icon reference
 
 ## Quick Icon Guide
 
-### 📁 Folders & Files
+### 📁 Folders & files
 | Icon | File Type | Extensions |
 |------|-----------|------------|
 | 📁 | Folder | (directories) |
@@ -10,7 +10,7 @@
 | 📝 | Markdown | `.md` |
 | 📕 | PDF | `.pdf` |
 
-### ⚙️ Executables & Scripts
+### ⚙️ Executables & scripts
 | Icon | File Type | Extensions |
 |------|-----------|------------|
 | ⚙️ | Executable | `.exe`, `.msi` |
@@ -45,13 +45,13 @@
 | 🦅 | Swift | `.swift` |
 | 🅺 | Kotlin | `.kt` |
 
-### 🌐 Web Files
+### 🌐 Web files
 | Icon | File Type | Extensions |
 |------|-----------|------------|
 | 🌐 | HTML | `.html`, `.htm` |
 | 🎨 | CSS | `.css`, `.scss`, `.sass`, `.less` |
 
-### 📊 Data Files
+### 📊 Data files
 | Icon | File Type | Extensions |
 |------|-----------|------------|
 | 📋 | Config/Data | `.json`, `.xml`, `.yaml`, `.yml` |
@@ -75,32 +75,34 @@
 | 💿 | Disk Image | `.iso`, `.img` |
 | 🔌 | Library | `.dll`, `.so` |
 
-## 🎯 Special Behavior by Icon
+Note: the app’s launcher disables creation of `.pyc` files by default, but the icon mapping includes them for completeness.
 
-### ⚙️ ⚡ 💻 🐍 (Executables)
+## 🎯 Special behavior by icon
+
+### ⚙️ ⚡ 💻 🐍 (executables)
 - **Right-click**: Shows "▶️ Run" option
 - **Click in Favorites**: Asks for confirmation, then runs
 - **Double-click**: Opens or runs with confirmation
 - **Safety**: Always shows warning before execution
 
-### 📁 (Folders)
+### 📁 (folders)
 - **Click in Favorites**: Navigates to folder
 - **Double-click**: Opens folder
 
-### 🖼️ 🎥 🎵 (Media)
+### 🖼️ 🎥 🎵 (media)
 - **Click in Favorites**: Opens with default app
 - **Tracks**: Added to recent files
 
-### 📄 📝 📕 (Documents)
+### 📄 📝 📕 (documents)
 - **Click in Favorites**: Opens with default app
 - **Tracks**: Added to recent files
 
-### 🔗 (Shortcuts)
+### 🔗 (shortcuts)
 - **Shows**: Proper shortcut icon
 - **Opens**: Resolves to target file
 - **Behavior**: Same as target file type
 
-## 💡 Pro Tips
+## 💡 Tips
 
 1. **Favorite your tools**: Add Python scripts, batch files, and executables to favorites for quick access
 2. **Visual scanning**: Different icons make it easy to spot file types at a glance
@@ -108,7 +110,7 @@
 4. **Unlimited favorites**: Scroll through as many favorites as you want
 5. **Better than Windows**: More file types supported than Windows File Explorer!
 
-## 🔍 Finding Files by Icon
+## 🔍 Finding files by icon
 
 Looking for a specific file type? Just scan for the icon:
 - Need a Python script? Look for 🐍
@@ -116,7 +118,7 @@ Looking for a specific file type? Just scan for the icon:
 - Looking for images? Spot 🖼️
 - Need executables? Search for ⚙️
 
-## 📝 Quick Reference
+## 📝 Quick reference
 
 **Most Common Icons You'll See:**
 ```
@@ -134,6 +136,6 @@ Looking for a specific file type? Just scan for the icon:
 
 ---
 
-**Updated**: October 27, 2025
-**Total Supported File Types**: 60+
-**Special Features**: Safe execution, proper icons, unlimited favorites
+Updated: October 27, 2025
+Supported types: dozens of common formats
+Notes: safe execution, proper icons, unlimited favorites

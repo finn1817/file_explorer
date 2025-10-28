@@ -1,0 +1,387 @@
+2025-10-27 22:21:37,142 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 22:21:37,143 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 22:21:37,143 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 22:21:37,144 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 22:21:37,145 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 22:21:37,145 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 22:21:37,146 - INFO - Loading favorites from DataManager
+2025-10-27 22:21:37,147 - DEBUG - Read favorites.json: 2 chars
+2025-10-27 22:21:37,147 - INFO - Loaded 0 favorites: []
+2025-10-27 22:21:37,169 - INFO - === Updating favorites list UI ===
+2025-10-27 22:21:37,170 - INFO - Current favorites: []
+2025-10-27 22:21:37,170 - INFO - After validation: 0 favorites
+2025-10-27 22:21:37,170 - INFO - Sorted favorites: []
+2025-10-27 22:21:37,172 - INFO - Favorites UI updated with 0 items
+2025-10-27 22:21:38,095 - DEBUG - Read history.json: 2 chars
+2025-10-27 22:21:38,099 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:21:38,100 - INFO - ✅ Wrote history.json: 94 bytes
+2025-10-27 22:21:38,101 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 22:23:57,821 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 22:23:57,823 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 22:23:57,824 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 22:23:57,825 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 22:23:57,826 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 22:23:57,828 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 22:23:57,829 - INFO - Loading favorites from DataManager
+2025-10-27 22:23:57,830 - DEBUG - Read favorites.json: 2 chars
+2025-10-27 22:23:57,831 - INFO - Loaded 0 favorites: []
+2025-10-27 22:23:57,870 - INFO - === Updating favorites list UI ===
+2025-10-27 22:23:57,872 - INFO - Current favorites: []
+2025-10-27 22:23:57,873 - INFO - After validation: 0 favorites
+2025-10-27 22:23:57,874 - INFO - Sorted favorites: []
+2025-10-27 22:23:57,876 - INFO - Favorites UI updated with 0 items
+2025-10-27 22:23:59,493 - DEBUG - Read history.json: 73 chars
+2025-10-27 22:23:59,500 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:23:59,505 - INFO - ✅ Wrote history.json: 185 bytes
+2025-10-27 22:23:59,506 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 22:24:03,002 - DEBUG - Read history.json: 146 chars
+2025-10-27 22:24:03,006 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:24:03,011 - INFO - ✅ Wrote history.json: 285 bytes
+2025-10-27 22:24:03,012 - DEBUG - Navigated to: C:\Users\danny\Desktop
+2025-10-27 22:24:05,319 - INFO - === Context menu requested ===
+2025-10-27 22:24:05,320 - INFO - Index valid: True
+2025-10-27 22:24:05,322 - INFO - Context menu for path: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:24:05,324 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:24:05,326 - INFO - Showing context menu
+2025-10-27 22:24:06,566 - INFO - === add_to_favorites called ===
+2025-10-27 22:24:06,567 - INFO - Input path parameter: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:24:06,568 - INFO - Normalized path: C:\Users\danny\Desktop\gitApps
+2025-10-27 22:24:06,569 - INFO - Adding favorite: C:\Users\danny\Desktop\gitApps
+2025-10-27 22:24:06,571 - DEBUG - Read favorites.json: 2 chars
+2025-10-27 22:24:06,577 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json.bak
+2025-10-27 22:24:06,588 - INFO - ✅ Wrote favorites.json: 44 bytes
+2025-10-27 22:24:06,590 - INFO - ✅ Added favorite: C:\Users\danny\Desktop\gitApps
+2025-10-27 22:24:06,591 - INFO - Loading favorites from DataManager
+2025-10-27 22:24:06,602 - DEBUG - Read favorites.json: 38 chars
+2025-10-27 22:24:06,603 - INFO - Loaded 1 favorites: ['C:\\Users\\danny\\Desktop\\gitApps']
+2025-10-27 22:24:06,604 - INFO - === Updating favorites list UI ===
+2025-10-27 22:24:06,606 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps']
+2025-10-27 22:24:06,607 - INFO - After validation: 1 favorites
+2025-10-27 22:24:06,608 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps']
+2025-10-27 22:24:06,619 - INFO - Favorites UI updated with 1 items
+2025-10-27 22:24:06,620 - INFO - ⭐ Added to favorites: gitApps
+2025-10-27 22:24:09,567 - INFO - === Context menu requested ===
+2025-10-27 22:24:09,568 - INFO - Index valid: True
+2025-10-27 22:24:09,569 - INFO - Context menu for path: C:/Users/danny/Desktop/MyApps
+2025-10-27 22:24:09,572 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 22:24:09,573 - INFO - Showing context menu
+2025-10-27 22:24:10,831 - INFO - === add_to_favorites called ===
+2025-10-27 22:24:10,833 - INFO - Input path parameter: C:/Users/danny/Desktop/MyApps
+2025-10-27 22:24:10,834 - INFO - Normalized path: C:\Users\danny\Desktop\MyApps
+2025-10-27 22:24:10,835 - INFO - Adding favorite: C:\Users\danny\Desktop\MyApps
+2025-10-27 22:24:10,837 - DEBUG - Read favorites.json: 38 chars
+2025-10-27 22:24:10,845 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json.bak
+2025-10-27 22:24:10,852 - INFO - ✅ Wrote favorites.json: 84 bytes
+2025-10-27 22:24:10,853 - INFO - ✅ Added favorite: C:\Users\danny\Desktop\MyApps
+2025-10-27 22:24:10,854 - INFO - Loading favorites from DataManager
+2025-10-27 22:24:10,863 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 22:24:10,864 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:24:10,865 - INFO - === Updating favorites list UI ===
+2025-10-27 22:24:10,867 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:24:10,868 - INFO - After validation: 2 favorites
+2025-10-27 22:24:10,869 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:24:10,888 - INFO - Favorites UI updated with 2 items
+2025-10-27 22:24:10,890 - INFO - ⭐ Added to favorites: MyApps
+2025-10-27 22:32:39,075 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 22:32:39,076 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 22:32:39,077 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 22:32:39,077 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 22:32:39,078 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 22:32:39,078 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 22:32:39,079 - INFO - Loading favorites from DataManager
+2025-10-27 22:32:39,080 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 22:32:39,081 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:32:39,102 - INFO - === Updating favorites list UI ===
+2025-10-27 22:32:39,103 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:32:39,103 - INFO - After validation: 2 favorites
+2025-10-27 22:32:39,103 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:32:39,110 - INFO - Favorites UI updated with 2 items
+2025-10-27 22:32:39,985 - DEBUG - Read history.json: 228 chars
+2025-10-27 22:32:39,990 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:32:39,993 - INFO - ✅ Wrote history.json: 376 bytes
+2025-10-27 22:32:39,993 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 22:32:45,688 - INFO - === Context menu requested ===
+2025-10-27 22:32:45,689 - INFO - Index valid: True
+2025-10-27 22:32:45,690 - INFO - Context menu for path: C:/Users/danny/.config
+2025-10-27 22:32:45,692 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/.config
+2025-10-27 22:32:45,694 - INFO - Showing context menu
+2025-10-27 22:54:57,708 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 22:54:57,709 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 22:54:57,709 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 22:54:57,710 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 22:54:57,710 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 22:54:57,710 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 22:54:57,711 - INFO - Loading favorites from DataManager
+2025-10-27 22:54:57,712 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 22:54:57,712 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:54:57,731 - INFO - === Updating favorites list UI ===
+2025-10-27 22:54:57,732 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:54:57,732 - INFO - After validation: 2 favorites
+2025-10-27 22:54:57,733 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:54:57,737 - INFO - Favorites UI updated with 2 items
+2025-10-27 22:54:58,679 - DEBUG - Read history.json: 301 chars
+2025-10-27 22:54:58,683 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:54:58,686 - INFO - ✅ Wrote history.json: 467 bytes
+2025-10-27 22:54:58,686 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 22:55:01,797 - DEBUG - Read bookmarks.json: 2 chars
+2025-10-27 22:55:01,812 - DEBUG - Read history.json: 374 chars
+2025-10-27 22:55:01,815 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:01,821 - INFO - ✅ Wrote history.json: 619 bytes
+2025-10-27 22:55:01,822 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\Bookmarks
+2025-10-27 22:55:03,711 - DEBUG - Read history.json: 508 chars
+2025-10-27 22:55:03,717 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:03,722 - INFO - ✅ Wrote history.json: 719 bytes
+2025-10-27 22:55:03,722 - DEBUG - Navigated to: C:\Users\danny\Desktop
+2025-10-27 22:55:05,159 - INFO - === Context menu requested ===
+2025-10-27 22:55:05,161 - INFO - Index valid: True
+2025-10-27 22:55:05,162 - INFO - Context menu for path: C:/Users/danny/Desktop/coding
+2025-10-27 22:55:05,164 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/coding
+2025-10-27 22:55:05,165 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Desktop/coding
+2025-10-27 22:55:05,167 - INFO - Showing context menu
+2025-10-27 22:55:06,656 - INFO - === Context menu requested ===
+2025-10-27 22:55:06,656 - INFO - Index valid: True
+2025-10-27 22:55:06,658 - INFO - Context menu for path: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:06,660 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:06,661 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:06,662 - INFO - Showing context menu
+2025-10-27 22:55:08,621 - INFO - Adding bookmark: gitApps -> C:\Users\danny\Desktop\gitApps
+2025-10-27 22:55:08,622 - DEBUG - Read bookmarks.json: 2 chars
+2025-10-27 22:55:08,627 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json.bak
+2025-10-27 22:55:08,631 - INFO - ✅ Wrote bookmarks.json: 55 bytes
+2025-10-27 22:55:08,678 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 22:55:11,482 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 22:55:11,524 - DEBUG - Read history.json: 590 chars
+2025-10-27 22:55:11,530 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:11,536 - INFO - ✅ Wrote history.json: 871 bytes
+2025-10-27 22:55:11,537 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\Bookmarks
+2025-10-27 22:55:13,687 - DEBUG - Read history.json: 724 chars
+2025-10-27 22:55:13,692 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:13,697 - INFO - ✅ Wrote history.json: 980 bytes
+2025-10-27 22:55:13,697 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps
+2025-10-27 22:55:16,534 - DEBUG - Read history.json: 815 chars
+2025-10-27 22:55:16,539 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:16,543 - INFO - ✅ Wrote history.json: 1080 bytes
+2025-10-27 22:55:16,544 - DEBUG - Navigated to: C:\Users\danny\Desktop
+2025-10-27 22:55:38,474 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 22:55:38,475 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 22:55:38,475 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 22:55:38,476 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 22:55:38,477 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 22:55:38,477 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 22:55:38,478 - INFO - Loading favorites from DataManager
+2025-10-27 22:55:38,479 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 22:55:38,480 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:55:38,508 - INFO - === Updating favorites list UI ===
+2025-10-27 22:55:38,509 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:55:38,509 - INFO - After validation: 2 favorites
+2025-10-27 22:55:38,510 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 22:55:38,518 - INFO - Favorites UI updated with 2 items
+2025-10-27 22:55:39,908 - DEBUG - Read history.json: 897 chars
+2025-10-27 22:55:39,911 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:39,914 - INFO - ✅ Wrote history.json: 1171 bytes
+2025-10-27 22:55:39,914 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 22:55:43,340 - DEBUG - Read history.json: 970 chars
+2025-10-27 22:55:43,345 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:43,351 - INFO - ✅ Wrote history.json: 1271 bytes
+2025-10-27 22:55:43,352 - DEBUG - Navigated to: C:\Users\danny\Desktop
+2025-10-27 22:55:46,551 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 22:55:46,710 - DEBUG - Read history.json: 1052 chars
+2025-10-27 22:55:46,716 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 22:55:46,723 - INFO - ✅ Wrote history.json: 1423 bytes
+2025-10-27 22:55:46,724 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\Bookmarks
+2025-10-27 22:55:47,772 - INFO - === Context menu requested ===
+2025-10-27 22:55:47,773 - INFO - Index valid: True
+2025-10-27 22:55:47,796 - INFO - Context menu for path: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:47,799 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:47,801 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 22:55:47,802 - INFO - Showing context menu
+2025-10-27 23:06:48,293 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 23:06:48,295 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 23:06:48,296 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 23:06:48,297 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 23:06:48,298 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 23:06:48,299 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 23:06:48,300 - INFO - Creating new data file: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\startup.json
+2025-10-27 23:06:48,305 - INFO - ✅ Wrote startup.json: 2 bytes
+2025-10-27 23:06:48,306 - INFO - Loading favorites from DataManager
+2025-10-27 23:06:48,308 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 23:06:48,309 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:06:48,354 - INFO - === Updating favorites list UI ===
+2025-10-27 23:06:48,355 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:06:48,356 - INFO - After validation: 2 favorites
+2025-10-27 23:06:48,357 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:06:48,368 - INFO - Favorites UI updated with 2 items
+2025-10-27 23:06:50,032 - DEBUG - Read history.json: 1186 chars
+2025-10-27 23:06:50,039 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:06:50,044 - INFO - ✅ Wrote history.json: 1514 bytes
+2025-10-27 23:06:50,045 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 23:06:51,512 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:06:53,074 - DEBUG - Read history.json: 1259 chars
+2025-10-27 23:06:53,079 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:06:53,083 - INFO - ✅ Wrote history.json: 1616 bytes
+2025-10-27 23:06:53,084 - DEBUG - Navigated to: C:\Users\danny\Documents
+2025-10-27 23:06:54,004 - DEBUG - Read history.json: 1343 chars
+2025-10-27 23:06:54,010 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:06:54,017 - INFO - ✅ Wrote history.json: 1716 bytes
+2025-10-27 23:06:54,018 - DEBUG - Navigated to: C:\Users\danny\Desktop
+2025-10-27 23:06:55,934 - INFO - === Context menu requested ===
+2025-10-27 23:06:55,936 - INFO - Index valid: True
+2025-10-27 23:06:55,938 - INFO - Context menu for path: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:06:55,940 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:06:55,941 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:06:55,943 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:06:55,944 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:06:55,945 - INFO - Added 'Add to Side Apps' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:06:55,947 - INFO - Showing context menu
+2025-10-27 23:06:57,989 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:06:57,994 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\startup.json.bak
+2025-10-27 23:06:57,999 - INFO - ✅ Wrote startup.json: 43 bytes
+2025-10-27 23:06:58,009 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:00,081 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:00,121 - DEBUG - Read history.json: 1425 chars
+2025-10-27 23:07:00,128 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:07:00,136 - INFO - ✅ Wrote history.json: 1867 bytes
+2025-10-27 23:07:00,138 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\SideApps
+2025-10-27 23:07:06,144 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 23:07:06,145 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 23:07:06,146 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 23:07:06,146 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 23:07:06,147 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 23:07:06,147 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 23:07:06,148 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\startup.json
+2025-10-27 23:07:06,149 - INFO - Loading favorites from DataManager
+2025-10-27 23:07:06,150 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 23:07:06,150 - INFO - Loaded 2 favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:06,183 - INFO - === Updating favorites list UI ===
+2025-10-27 23:07:06,183 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:06,184 - INFO - After validation: 2 favorites
+2025-10-27 23:07:06,184 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\gitApps', 'C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:06,190 - INFO - Favorites UI updated with 2 items
+2025-10-27 23:07:07,523 - DEBUG - Read history.json: 1558 chars
+2025-10-27 23:07:07,526 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:07:07,528 - INFO - ✅ Wrote history.json: 1958 bytes
+2025-10-27 23:07:07,529 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 23:07:08,762 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:14,244 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:14,365 - DEBUG - Read history.json: 1631 chars
+2025-10-27 23:07:14,371 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:07:14,378 - INFO - ✅ Wrote history.json: 2109 bytes
+2025-10-27 23:07:14,379 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\SideApps
+2025-10-27 23:07:15,824 - INFO - === Context menu requested ===
+2025-10-27 23:07:15,826 - INFO - Index valid: True
+2025-10-27 23:07:15,848 - INFO - Context menu for path: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:07:15,851 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:07:15,854 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:07:15,855 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:07:15,858 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:15,860 - INFO - Added 'Remove from Side Apps' action for: C:/Users/danny/Desktop/MyApps
+2025-10-27 23:07:15,863 - INFO - Showing context menu
+2025-10-27 23:07:17,199 - DEBUG - Read startup.json: 37 chars
+2025-10-27 23:07:17,204 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\startup.json.bak
+2025-10-27 23:07:17,210 - INFO - ✅ Wrote startup.json: 2 bytes
+2025-10-27 23:07:17,222 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:07:20,170 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:07:20,214 - DEBUG - Read history.json: 1764 chars
+2025-10-27 23:07:20,219 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:07:20,225 - INFO - ✅ Wrote history.json: 2261 bytes
+2025-10-27 23:07:20,226 - DEBUG - Navigated to: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\Bookmarks
+2025-10-27 23:07:21,694 - INFO - === Context menu requested ===
+2025-10-27 23:07:21,695 - INFO - Index valid: True
+2025-10-27 23:07:21,710 - INFO - Context menu for path: C:/Users/danny/Desktop/gitApps
+2025-10-27 23:07:21,713 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 23:07:21,717 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:07:21,719 - INFO - Added 'Remove from Bookmarks' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 23:07:21,721 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:07:21,723 - INFO - Added 'Add to Side Apps' action for: C:/Users/danny/Desktop/gitApps
+2025-10-27 23:07:21,725 - INFO - Showing context menu
+2025-10-27 23:07:24,090 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:07:24,091 - INFO - Removing bookmark: gitApps
+2025-10-27 23:07:24,093 - DEBUG - Read bookmarks.json: 49 chars
+2025-10-27 23:07:24,098 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json.bak
+2025-10-27 23:07:24,103 - INFO - ✅ Wrote bookmarks.json: 2 bytes
+2025-10-27 23:07:24,106 - DEBUG - Read bookmarks.json: 2 chars
+2025-10-27 23:07:27,465 - INFO - === remove_from_favorites called ===
+2025-10-27 23:07:27,466 - INFO - Removing path: C:\Users\danny\Desktop\gitApps
+2025-10-27 23:07:27,467 - INFO - Removing favorite: C:\Users\danny\Desktop\gitApps
+2025-10-27 23:07:27,468 - DEBUG - Read favorites.json: 75 chars
+2025-10-27 23:07:27,473 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json.bak
+2025-10-27 23:07:27,477 - INFO - ✅ Wrote favorites.json: 43 bytes
+2025-10-27 23:07:27,478 - INFO - ✅ Removed favorite: C:\Users\danny\Desktop\gitApps
+2025-10-27 23:07:27,479 - INFO - Loading favorites from DataManager
+2025-10-27 23:07:27,501 - DEBUG - Read favorites.json: 37 chars
+2025-10-27 23:07:27,503 - INFO - Loaded 1 favorites: ['C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:27,504 - INFO - === Updating favorites list UI ===
+2025-10-27 23:07:27,506 - INFO - Current favorites: ['C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:27,507 - INFO - After validation: 1 favorites
+2025-10-27 23:07:27,508 - INFO - Sorted favorites: ['C:\\Users\\danny\\Desktop\\MyApps']
+2025-10-27 23:07:27,517 - INFO - Favorites UI updated with 1 items
+2025-10-27 23:07:27,518 - INFO - ❌ Removed from favorites: gitApps
+2025-10-27 23:07:28,283 - INFO - === remove_from_favorites called ===
+2025-10-27 23:07:28,285 - INFO - Removing path: C:\Users\danny\Desktop\MyApps
+2025-10-27 23:07:28,286 - INFO - Removing favorite: C:\Users\danny\Desktop\MyApps
+2025-10-27 23:07:28,288 - DEBUG - Read favorites.json: 37 chars
+2025-10-27 23:07:28,292 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json.bak
+2025-10-27 23:07:28,298 - INFO - ✅ Wrote favorites.json: 2 bytes
+2025-10-27 23:07:28,299 - INFO - ✅ Removed favorite: C:\Users\danny\Desktop\MyApps
+2025-10-27 23:07:28,300 - INFO - Loading favorites from DataManager
+2025-10-27 23:07:28,302 - DEBUG - Read favorites.json: 2 chars
+2025-10-27 23:07:28,304 - INFO - Loaded 0 favorites: []
+2025-10-27 23:07:28,305 - INFO - === Updating favorites list UI ===
+2025-10-27 23:07:28,307 - INFO - Current favorites: []
+2025-10-27 23:07:28,308 - INFO - After validation: 0 favorites
+2025-10-27 23:07:28,309 - INFO - Sorted favorites: []
+2025-10-27 23:07:28,313 - INFO - Favorites UI updated with 0 items
+2025-10-27 23:07:28,314 - INFO - ❌ Removed from favorites: MyApps
+2025-10-27 23:10:44,020 - INFO - DataManager initialized with data directory: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data
+2025-10-27 23:10:44,021 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\favorites.json
+2025-10-27 23:10:44,022 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\settings.json
+2025-10-27 23:10:44,023 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json
+2025-10-27 23:10:44,023 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json
+2025-10-27 23:10:44,024 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\recent_files.json
+2025-10-27 23:10:44,025 - DEBUG - Data file exists: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\startup.json
+2025-10-27 23:10:44,026 - INFO - Loading favorites from DataManager
+2025-10-27 23:10:44,027 - DEBUG - Read favorites.json: 2 chars
+2025-10-27 23:10:44,027 - INFO - Loaded 0 favorites: []
+2025-10-27 23:10:44,053 - INFO - === Updating favorites list UI ===
+2025-10-27 23:10:44,053 - INFO - Current favorites: []
+2025-10-27 23:10:44,054 - INFO - After validation: 0 favorites
+2025-10-27 23:10:44,055 - INFO - Sorted favorites: []
+2025-10-27 23:10:44,056 - INFO - Favorites UI updated with 0 items
+2025-10-27 23:10:45,137 - DEBUG - Read history.json: 1898 chars
+2025-10-27 23:10:45,147 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:10:45,155 - INFO - ✅ Wrote history.json: 2352 bytes
+2025-10-27 23:10:45,156 - DEBUG - Navigated to: C:\Users\danny
+2025-10-27 23:10:46,726 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:10:47,520 - DEBUG - Read history.json: 1971 chars
+2025-10-27 23:10:47,524 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\history.json.bak
+2025-10-27 23:10:47,527 - INFO - ✅ Wrote history.json: 2454 bytes
+2025-10-27 23:10:47,527 - DEBUG - Navigated to: C:\Users\danny\Documents
+2025-10-27 23:10:48,740 - INFO - === Context menu requested ===
+2025-10-27 23:10:48,742 - INFO - Index valid: True
+2025-10-27 23:10:48,743 - INFO - Context menu for path: C:/Users/danny/Documents/My Games
+2025-10-27 23:10:48,746 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:10:48,748 - DEBUG - Read bookmarks.json: 2 chars
+2025-10-27 23:10:48,750 - INFO - Added 'Add to Bookmarks' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:10:48,752 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:10:48,753 - INFO - Added 'Add to Side Apps' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:10:48,755 - INFO - Showing context menu
+2025-10-27 23:10:52,691 - INFO - Adding bookmark: My Games -> C:\Users\danny\Documents\My Games
+2025-10-27 23:10:52,693 - DEBUG - Read bookmarks.json: 2 chars
+2025-10-27 23:10:52,697 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json.bak
+2025-10-27 23:10:52,703 - INFO - ✅ Wrote bookmarks.json: 59 bytes
+2025-10-27 23:10:52,749 - DEBUG - Read bookmarks.json: 53 chars
+2025-10-27 23:11:10,420 - INFO - === Context menu requested ===
+2025-10-27 23:11:10,422 - INFO - Index valid: True
+2025-10-27 23:11:10,423 - INFO - Context menu for path: C:/Users/danny/Documents/My Games
+2025-10-27 23:11:10,425 - INFO - Added 'Add to Favorites' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:11:10,427 - DEBUG - Read bookmarks.json: 53 chars
+2025-10-27 23:11:10,429 - INFO - Added 'Remove from Bookmarks' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:11:10,431 - DEBUG - Read startup.json: 2 chars
+2025-10-27 23:11:10,432 - INFO - Added 'Add to Side Apps' action for: C:/Users/danny/Documents/My Games
+2025-10-27 23:11:10,433 - INFO - Showing context menu
+2025-10-27 23:11:11,903 - DEBUG - Read bookmarks.json: 53 chars
+2025-10-27 23:11:11,904 - INFO - Removing bookmark: My Games
+2025-10-27 23:11:11,906 - DEBUG - Read bookmarks.json: 53 chars
+2025-10-27 23:11:11,917 - DEBUG - Created backup: C:\Users\danny\Desktop\gitApps\files\file_explorer\app-code\data\bookmarks.json.bak
+2025-10-27 23:11:11,922 - INFO - ✅ Wrote bookmarks.json: 2 bytes
+2025-10-27 23:11:11,928 - DEBUG - Read bookmarks.json: 2 chars

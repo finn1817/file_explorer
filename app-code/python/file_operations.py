@@ -4,6 +4,7 @@ import subprocess
 import platform
 from send2trash import send2trash
 from pathlib import Path
+from typing import Optional, Tuple
 
 class FileOperations:
     """Handle all file system operations"""
@@ -263,3 +264,41 @@ class FileOperations:
             # If winshell not available, return original path
             pass
         return lnk_path
+
+    # -------------------- Shortcuts (Windows) --------------------
+    def create_shortcut(self, target_path: str, shortcut_path: str, icon_path: Optional[str] = None) -> Tuple[bool, str]:
+        """Create a shortcut pointing to target_path.
+
+        On Windows, tries to create a .lnk via COM. If COM libs are missing,
+        falls back to a simple .url file that points to the target.
+
+        Returns (success, message).
+        """
+        try:
+            if self.system != "Windows":
+                return False, "Shortcuts are only supported on Windows."
+
+            # Prefer .lnk via COM if available
+            try:
+                import win32com.client  # type: ignore
+                shell = win32com.client.Dispatch('WScript.Shell')
+                shortcut = shell.CreateShortcut(shortcut_path)
+                shortcut.TargetPath = target_path
+                shortcut.WorkingDirectory = os.path.dirname(target_path)
+                if icon_path and os.path.exists(icon_path):
+                    shortcut.IconLocation = icon_path
+                shortcut.Save()
+                return True, f"Created shortcut: {os.path.basename(shortcut_path)}"
+            except Exception:
+                # Fallback: create a .url internet shortcut
+                # Works for files/folders using file:/// URI
+                uri = Path(target_path).resolve().as_uri()
+                content = f"[InternetShortcut]\nURL={uri}\nIconIndex=0\n"
+                try:
+                    with open(shortcut_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    return True, f"Created URL shortcut: {os.path.basename(shortcut_path)}"
+                except Exception as e2:
+                    return False, f"Failed to create URL shortcut: {e2}"
+        except Exception as e:
+            return False, f"Failed to create shortcut: {e}"

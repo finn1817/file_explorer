@@ -1,35 +1,32 @@
-# 🚀 Executable & Script Support Guide
+# 🚀 Executable and script support
 
 ## ✨ What's New
 
-Your Liquid Glass File Explorer now has **FULL SUPPORT** for running executables and scripts directly from the app! This makes it more powerful than Windows File Explorer.
+You can open files easily as usual, and for executables and scripts we add a confirmation step before running them.
 
 ## 📋 Supported File Types
 
 ### ⚙️ Executables
-- `.exe` - Windows executables
-- `.msi` - Windows installers
-- `.app` - macOS applications
+- `.exe` – Windows executables
+- `.msi` – Windows installers
 
-### ⚡ Batch Scripts
-- `.bat` - Batch files
-- `.cmd` - Command scripts
+### ⚡ Batch / command
+- `.bat`, `.cmd`
 
 ### 💻 PowerShell
-- `.ps1` - PowerShell scripts (runs with ExecutionPolicy Bypass)
+- `.ps1` (runs with ExecutionPolicy Bypass on Windows)
 
-### 🐍 Python Scripts
-- `.py` - Python scripts
-- `.pyw` - Python GUI scripts
+### 🐍 Python
+- `.py`, `.pyw`
 
-### 📜 Other Scripts
-- `.vbs` - VBScript files
-- `.sh` - Shell scripts (Linux/Mac)
+### 📜 Other
+- `.vbs` (VBScript)
+- `.sh` (Linux/Mac)
 
 ### 🔗 Shortcuts
-- `.lnk` - Windows shortcuts (now properly displayed with 🔗 icon)
+- `.lnk` – Windows shortcuts (displayed with 🔗)
 
-## 🎨 Enhanced Icon System
+## 🎨 Icons
 
 ### All File Types Now Have Custom Icons:
 
@@ -51,7 +48,7 @@ Your Liquid Glass File Explorer now has **FULL SUPPORT** for running executables
 - 📦 `.zip`, `.rar`, `.7z`, `.tar`, `.gz`, `.bz2`, `.xz`
 
 **Programming:**
-- 🐍 Python (`.py`, `.pyc`, `.pyw`)
+- 🐍 Python (`.py`, `.pyw`, `.pyc`)
 - 📜 JavaScript (`.js`)
 - 📘 TypeScript (`.ts`)
 - ⚛️ React (`.jsx`, `.tsx`)
@@ -81,29 +78,31 @@ Your Liquid Glass File Explorer now has **FULL SUPPORT** for running executables
 - 💿 Disk images (`.iso`, `.img`)
 - 🔌 Libraries (`.dll`, `.so`)
 
-## 🎯 How to Use
+Note: by default the app does not create `.pyc` files when you run it from `run.bat`.
 
-### Method 1: Right-Click Context Menu
+## 🎯 How to use
+
+### Method 1: Right‑click menu
 1. Right-click on any executable file (.exe, .bat, .py, etc.)
 2. Click "▶️ Run"
 3. Confirm you want to run it
 4. The file executes!
 
-### Method 2: From Favorites
+### Method 2: From favorites
 1. Add an executable to favorites (right-click → "⭐ Add to Favorites")
 2. It appears in the sidebar with the correct icon (⚙️, ⚡, or 🐍)
 3. Click the favorite
 4. Confirm you want to run it
 5. Done!
 
-### Method 3: Double-Click
+### Method 3: Double‑click
 - Double-click any file
 - If it's an executable, you'll be asked to confirm
 - If it's a regular file, it opens with the default application
 
-## 🔒 Safety Features
+## 🔒 Safety
 
-### Confirmation Dialogs
+### Confirm before run
 Every executable requires confirmation before running:
 ```
 Are you sure you want to run this executable?
@@ -114,39 +113,33 @@ Are you sure you want to run this executable?
 ⚠️ Only run files you trust!
 ```
 
-### Detailed Logging
+### Logging
 All executions are logged:
 ```
 2025-10-27 21:30:00 - INFO - User confirmed - running: C:\path\to\file.exe
 2025-10-27 21:30:01 - INFO - Successfully executed: file.exe
 ```
 
-### Status Bar Feedback
+### Status bar feedback
 - ✅ "Launched: shutdown.exe"
 - ✅ "Running Python script: my_script.py"
 - ❌ "Failed to run file.exe: Permission denied"
 
-## 💡 Advanced Features
+## 💡 Details per type (Windows)
 
-### Python Scripts
-- Automatically runs with `python` command
-- No need to configure anything
-- Output can be viewed if script opens a window
+### Python scripts
+- Launched with `python` (or `python3` on non‑Windows).
+- If you run from `run.bat`, `.pyc` won’t be created.
 
-### PowerShell Scripts
-- Runs with `-ExecutionPolicy Bypass`
-- Bypasses security restrictions for convenience
-- Always shows confirmation first
+### PowerShell scripts
+- Run with `-ExecutionPolicy Bypass`.
+- You’ll always get a confirmation dialog first.
 
-### Batch Files
-- Runs in new command window
-- Can see output and errors
-- Window closes when script completes
+### Batch files
+- Run in a new Command Prompt window.
 
 ### Shortcuts (.lnk)
-- Proper 🔗 icon
-- Resolves to actual target file
-- Opens target application
+- Shown with 🔗 icon and open the target.
 
 ## 🎪 Examples
 
@@ -188,57 +181,17 @@ pause
 - Python is installed (for .py files)
 - File is not corrupted
 
-### Python scripts don't run
-**Solution**: 
-- Ensure Python is installed
-- Add Python to PATH
-- Try: `python --version` in CMD
+### Python scripts don’t run
+• Ensure Python is installed and on PATH. Try `python --version`.
 
 ### PowerShell scripts blocked
-**Solution**:
-- The app uses `-ExecutionPolicy Bypass`
-- Should work without changing Windows settings
-- If still blocked, run PowerShell as Administrator once
+The app uses `-ExecutionPolicy Bypass`. If you still get a policy error, open PowerShell as Administrator and retry.
 
 ### Icons not showing correctly
-**Solution**:
-- Restart the app
-- Check the file extension is correct
-- Some file types may not have custom icons
-
-## 📊 Comparison with Windows File Explorer
-
-| Feature | Windows Explorer | Liquid Glass Explorer |
-|---------|------------------|----------------------|
-| Scrollable Favorites | ❌ Limited | ✅ Unlimited |
-| Custom Icons | ❌ System only | ✅ 60+ custom icons |
-| Run Executables | ✅ Yes | ✅ Yes + confirmation |
-| Run Python Scripts | ❌ No | ✅ Yes |
-| Run Batch Files | ✅ Yes | ✅ Yes |
-| Recent Files Tracking | ❌ No | ✅ Yes |
-| Navigation History | ❌ No | ✅ Yes |
-| Detailed Logging | ❌ No | ✅ Yes |
-| Safety Confirmations | ❌ No | ✅ Yes |
+- Restart the app and verify the file extension.
 
 ## 🎉 Summary
-
-**Your File Explorer is now MORE POWERFUL than Windows File Explorer!**
-
-✅ Supports ALL executable types
-✅ Custom icons for 60+ file types
-✅ Safe execution with confirmations
-✅ Detailed logging and feedback
-✅ Unlimited scrollable favorites
-✅ Run scripts directly (Python, Batch, PowerShell)
-✅ Beautiful liquid glass UI
-✅ Complete CRUD operations
-
-**You can now:**
-- Favorite your most-used executables
-- Run Python scripts with one click
-- Execute batch files safely
-- Launch applications from favorites
-- See proper icons for every file type
-- Track recent files and navigation history
-
-🚀 **This is a production-ready, feature-rich file explorer!**
+• Open files with their default apps.
+• Run executables and scripts with a confirmation step.
+• Shortcuts resolve to their targets.
+• Logging records what happened if you need to debug.

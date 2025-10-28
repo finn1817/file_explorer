@@ -38,6 +38,7 @@ class DataManager:
             'history': self.data_dir / 'history.json',
             'bookmarks': self.data_dir / 'bookmarks.json',
             'recent_files': self.data_dir / 'recent_files.json',
+            'startup': self.data_dir / 'startup.json',  # Side Apps (apps/files to auto-run/open)
         }
         
         logger.info(f"DataManager initialized with data directory: {self.data_dir}")
@@ -53,6 +54,7 @@ class DataManager:
             'history': [],
             'bookmarks': {},
             'recent_files': [],
+            'startup': [],
         }
         
         for name, filepath in self.files.items():
@@ -466,3 +468,31 @@ class DataManager:
                 }
         
         return stats
+
+    # ==================== STARTUP (SIDE APPS) ====================
+
+    def get_startup_apps(self) -> List[str]:
+        """Return list of app/file/folder paths to run/open on app start."""
+        items = self._read_json(self.files['startup'], [])
+        # ensure list of strings
+        return [p for p in items if isinstance(p, str)]
+
+    def add_startup_app(self, path: str) -> bool:
+        """Add a path to startup list (idempotent)."""
+        items = self.get_startup_apps()
+        if path in items:
+            return False
+        items.append(path)
+        return self._write_json(self.files['startup'], items)
+
+    def remove_startup_app(self, path: str) -> bool:
+        """Remove a path from startup list if present."""
+        items = self.get_startup_apps()
+        if path not in items:
+            return False
+        items = [p for p in items if p != path]
+        return self._write_json(self.files['startup'], items)
+
+    def clear_startup_apps(self) -> bool:
+        """Clear the startup list."""
+        return self._write_json(self.files['startup'], [])

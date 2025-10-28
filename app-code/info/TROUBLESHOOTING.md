@@ -1,6 +1,6 @@
-# 🔧 Liquid Glass File Explorer - Quick Troubleshooting Guide
+# 🔧 Quick troubleshooting
 
-## ✅ Favorites System is NOW WORKING!
+## ✅ Favorites
 
 ### How to Add Favorites
 1. **Right-click** on any file or folder
@@ -15,22 +15,23 @@
 ### How to Remove Favorites
 - Click the **×** button next to any favorite in the sidebar
 
-### Where is the Data Stored?
+### Where is the data stored?
 All app data is now in the `data/` directory:
 
 ```
 app-code/
 ├── data/
-│   ├── favorites.json       ← Your favorites
-│   ├── settings.json        ← Your settings
-│   ├── history.json         ← Navigation history
-│   ├── bookmarks.json       ← Named bookmarks
-│   └── recent_files.json    ← Recently opened files
-├── file_explorer.log        ← Detailed logs of everything
-└── ... (other app files)
+│   ├── favorites.json        ← your favorites
+│   ├── settings.json (.bak)  ← your settings (+ auto‑backups)
+│   ├── history.json (.bak)   ← navigation history (+ auto‑backups)
+│   ├── bookmarks.json        ← named bookmarks
+│   └── recent_files.json     ← recently opened files
+├── log/
+│   └── file_explorer.log     ← detailed logs
+└── ...
 ```
 
-## 🐛 Debugging Tips
+## 🐛 Debugging tips
 
 ### Check if Favorites are Being Saved
 1. Open `data/favorites.json` in a text editor
@@ -42,7 +43,7 @@ app-code/
    ]
    ```
 
-### View Detailed Logs
+### View detailed logs
 Open `file_explorer.log` in a text editor to see:
 - When favorites are added/removed
 - File paths being accessed
@@ -58,10 +59,10 @@ Example log entries when adding a favorite:
 2025-10-27 21:11:00 - INFO - Loaded 1 favorites: ['C:\\Users\\danny\\Desktop\\gitApps']
 ```
 
-### Console Emoji Warning
-You might see "Logging error" messages about Unicode characters in the console. **This is normal on Windows** and doesn't affect functionality. The emojis just can't display in the PowerShell console, but they work fine in the log file.
+### Console emoji warning
+If the terminal shows character encoding warnings, it’s just the console font/encoding. The log file still records everything correctly.
 
-## 📋 Full CRUD Operations
+## 📋 What works
 
 ### Favorites CRUD
 - ✅ **Create**: Right-click → "Add to Favorites" or Ctrl+D
@@ -80,31 +81,31 @@ You might see "Logging error" messages about Unicode characters in the console. 
 - ✅ **Read**: Settings auto-load
 - ✅ **Delete**: Clear from settings dialog
 
-## 🔍 Common Issues & Solutions
+## 🔍 Common issues & solutions
 
-### Issue: "Nothing shows up when I favorite something"
+### Issue: “Nothing shows up when I favorite something”
 **Solution**: 
 1. Check the log file for errors
 2. Verify `data/favorites.json` exists and has content
 3. Try restarting the app
 
-### Issue: "Favorites disappear after restarting"
+### Issue: “Favorites disappear after restarting”
 **Solution**:
 1. Check if `data/favorites.json` has content
 2. Verify file permissions (should be readable/writable)
 3. Check the log for "Loading favorites from DataManager"
 
-### Issue: "Can't write to data files"
+### Issue: “Can't write to data files”
 **Solution**:
 1. Run the app as Administrator (right-click → Run as Administrator)
 2. Check folder permissions
 3. Ensure antivirus isn't blocking file writes
 
-### Issue: "No console output"
+### Issue: “No console output”
 **Solution**:
 All output is in `file_explorer.log` - this is intentional for better debugging!
 
-## 📊 Data File Structure
+## 📊 Data file structure
 
 ### favorites.json
 ```json
@@ -133,7 +134,7 @@ All output is in `file_explorer.log` - this is intentional for better debugging!
 ]
 ```
 
-## 🎯 Testing Checklist
+## 🎯 Testing checklist
 
 - [ ] Add a favorite (right-click or Ctrl+D)
 - [ ] See popup confirmation
@@ -144,12 +145,22 @@ All output is in `file_explorer.log` - this is intentional for better debugging!
 - [ ] Check `data/favorites.json` has content
 - [ ] Check `file_explorer.log` for activity
 
-## 📞 Still Having Issues?
+## 📞 Still having issues?
 
 1. **Delete the `data/` folder** and restart the app (it will recreate)
 2. **Check the log file** for specific error messages
-3. **Verify Python version** (should be Python 3.7+)
-4. **Check dependencies**: `pip install PyQt6 send2trash`
+3. **Verify Python version** (3.11+ recommended; developed on 3.13)
+4. **Check dependencies**: `PyQt6` and `send2trash`
+  ```powershell
+  py -m pip install PyQt6 send2trash
+  ```
+
+### “I see .pyc files again”
+The app disables bytecode writes via the launcher and in `main.py`. If you run Python manually, use:
+```powershell
+python -B main.py
+```
+or set `PYTHONDONTWRITEBYTECODE=1` for your shell session.
 
 ## 🎉 Everything Working?
 
@@ -162,5 +173,5 @@ Great! Here's what you can do:
 
 ---
 
-**Last Updated**: October 27, 2025
-**Status**: ✅ Favorites Fully Functional
+Updated: October 27, 2025
+Status: ✅ Verified

@@ -80,6 +80,9 @@ class LiquidGlassFileExplorer(QMainWindow):
         self.connect_signals()
         self.navigate_to_path(self.current_path)
 
+        # Defer side-apps auto-run until UI is ready
+        QTimer.singleShot(500, self.run_side_apps_on_startup)
+
     def init_ui(self):
         """Initialize the user interface"""
         self.setWindowTitle("✨ Liquid Glass File Explorer")
@@ -108,7 +111,7 @@ class LiquidGlassFileExplorer(QMainWindow):
         splitter = QSplitter(Qt.Orientation.Horizontal)
         main_layout.addWidget(splitter)
         
-        # Create sidebar
+    # Create sidebar
         self.create_sidebar(splitter)
         
         # Create main content area
@@ -192,6 +195,68 @@ class LiquidGlassFileExplorer(QMainWindow):
                 """)
                 btn.clicked.connect(lambda checked, p=path: self.navigate_to_path(p))
                 sidebar_layout.addWidget(btn)
+
+    # Add Bookmarks button (opens managed Bookmarks folder)
+        bookmarks_btn = QPushButton("📑 Bookmarks")
+        bookmarks_btn.setStyleSheet("""
+            QPushButton {
+                text-align: left;
+                padding: 10px 14px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 8px;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.08),
+                    stop:1 rgba(255, 255, 255, 0.04));
+                color: rgba(255, 255, 255, 0.95);
+                font-size: 10pt;
+                font-weight: 500;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.18),
+                    stop:1 rgba(255, 255, 255, 0.12));
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: white;
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.12),
+                    stop:1 rgba(255, 255, 255, 0.20));
+            }
+        """)
+        bookmarks_btn.clicked.connect(self.open_bookmarks_folder)
+        sidebar_layout.addWidget(bookmarks_btn)
+
+        # Add Side Apps button (opens managed SideApps folder)
+        sideapps_btn = QPushButton("🧩 Side Apps")
+        sideapps_btn.setStyleSheet("""
+            QPushButton {
+                text-align: left;
+                padding: 10px 14px;
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 8px;
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.08),
+                    stop:1 rgba(255, 255, 255, 0.04));
+                color: rgba(255, 255, 255, 0.95);
+                font-size: 10pt;
+                font-weight: 500;
+            }
+            QPushButton:hover {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.18),
+                    stop:1 rgba(255, 255, 255, 0.12));
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                color: white;
+            }
+            QPushButton:pressed {
+                background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                    stop:0 rgba(255, 255, 255, 0.12),
+                    stop:1 rgba(255, 255, 255, 0.20));
+            }
+        """)
+        sideapps_btn.clicked.connect(self.open_side_apps_folder)
+        sidebar_layout.addWidget(sideapps_btn)
         
         # Add spacing before favorites
         sidebar_layout.addSpacing(20)
@@ -391,6 +456,13 @@ class LiquidGlassFileExplorer(QMainWindow):
         add_fav_action.setToolTip("Add selected item to favorites (Ctrl+D)")
         add_fav_action.triggered.connect(lambda: self.add_to_favorites())
         toolbar.addAction(add_fav_action)
+
+        # Add to bookmarks button
+        add_bm_action = QAction("🔖 Add to Bookmarks", self)
+        add_bm_action.setShortcut(QKeySequence("Ctrl+B"))
+        add_bm_action.setToolTip("Add selected item to bookmarks (Ctrl+B)")
+        add_bm_action.triggered.connect(lambda: self.add_to_bookmarks())
+        toolbar.addAction(add_bm_action)
         
         toolbar.addSeparator()
         
@@ -825,6 +897,36 @@ class LiquidGlassFileExplorer(QMainWindow):
             favorite_action = menu.addAction("⭐ Add to Favorites")
             favorite_action.triggered.connect(lambda checked=False, p=selected_path: self.add_to_favorites(p))
             logger.info(f"Added 'Add to Favorites' action for: {selected_path}")
+
+            # Bookmarks: show Add or Remove depending on membership
+            try:
+                bookmarks = self.data_manager.get_bookmarks()  # name -> path
+                is_bookmarked = any(os.path.abspath(p) == os.path.abspath(selected_path) for p in bookmarks.values())
+            except Exception:
+                is_bookmarked = False
+            if is_bookmarked:
+                bm_remove_action = menu.addAction("🔖 Remove from Bookmarks")
+                bm_remove_action.triggered.connect(lambda checked=False, p=selected_path: self.remove_from_bookmarks(p))
+                logger.info(f"Added 'Remove from Bookmarks' action for: {selected_path}")
+            else:
+                bm_add_action = menu.addAction("🔖 Add to Bookmarks")
+                bm_add_action.triggered.connect(lambda checked=False, p=selected_path: self.add_to_bookmarks(p))
+                logger.info(f"Added 'Add to Bookmarks' action for: {selected_path}")
+
+            # Side Apps (startup): Add/Remove depending on membership
+            try:
+                startup_items = self.data_manager.get_startup_apps()
+                in_startup = os.path.abspath(selected_path) in [os.path.abspath(p) for p in startup_items]
+            except Exception:
+                in_startup = False
+            if in_startup:
+                sa_remove_action = menu.addAction("🧩 Remove from Side Apps")
+                sa_remove_action.triggered.connect(lambda checked=False, p=selected_path: self.remove_from_side_apps(p))
+                logger.info(f"Added 'Remove from Side Apps' action for: {selected_path}")
+            else:
+                sa_add_action = menu.addAction("🧩 Add to Side Apps")
+                sa_add_action.triggered.connect(lambda checked=False, p=selected_path: self.add_to_side_apps(p))
+                logger.info(f"Added 'Add to Side Apps' action for: {selected_path}")
         
         menu.addSeparator()
         paste_action = menu.addAction("📌 Paste")
@@ -1133,6 +1235,194 @@ class LiquidGlassFileExplorer(QMainWindow):
                         self.data_manager.remove_favorite(fav_path)
         
         logger.info(f"Favorites UI updated with {len(sorted_favorites)} items")
+
+    # -------------------- Bookmarks support --------------------
+    def get_bookmarks_dir(self) -> Path:
+        """Return the managed Bookmarks directory under app-code."""
+        return Path(__file__).parent.parent / 'Bookmarks'
+
+    def sync_bookmarks_folder(self) -> None:
+        """Create/update shortcuts for all bookmarks in the managed folder.
+
+        Creates .lnk shortcuts on Windows (or .url fallback) with the
+        same names as in bookmarks.json. Stale shortcuts are removed.
+        """
+        try:
+            bookmarks_dir = self.get_bookmarks_dir()
+            bookmarks_dir.mkdir(parents=True, exist_ok=True)
+
+            # Build current desired map: filename -> target
+            bookmarks = self.data_manager.get_bookmarks()  # name -> path
+
+            # Clear existing entries (only files we created)
+            for entry in bookmarks_dir.iterdir():
+                if entry.is_file() and (entry.suffix.lower() in ['.lnk', '.url']):
+                    try:
+                        entry.unlink()
+                    except Exception:
+                        pass
+
+            # Create fresh shortcuts
+            for name, target in bookmarks.items():
+                safe_name = name.strip() or Path(target).name
+                # Avoid invalid filename chars
+                for ch in '<>:"/\\|?*':
+                    safe_name = safe_name.replace(ch, '_')
+
+                # Prefer .lnk; fallback to .url (our create_shortcut handles this)
+                shortcut_path = bookmarks_dir / f"{safe_name}.lnk"
+                success, _ = self.file_ops.create_shortcut(target, str(shortcut_path))
+                if not success:
+                    # Try .url as alternate filename explicitly
+                    url_path = bookmarks_dir / f"{safe_name}.url"
+                    self.file_ops.create_shortcut(target, str(url_path))
+        except Exception as e:
+            logger.error(f"Failed to sync bookmarks folder: {e}", exc_info=True)
+
+    def open_bookmarks_folder(self) -> None:
+        """Sync and navigate to the managed Bookmarks folder."""
+        self.sync_bookmarks_folder()
+        self.navigate_to_path(str(self.get_bookmarks_dir()))
+
+    def add_to_bookmarks(self, path: str | None = None) -> None:
+        """Add a file/folder to bookmarks using its base name as the key."""
+        try:
+            if path is None:
+                paths = self.get_selected_paths()
+                if not paths:
+                    self.status_bar.showMessage("⚠️ No item selected", 3000)
+                    return
+                path = paths[0]
+
+            if not isinstance(path, str):
+                return
+
+            path = os.path.abspath(path)
+            if not os.path.exists(path):
+                self.status_bar.showMessage("⚠️ Path does not exist", 3000)
+                return
+
+            name = os.path.basename(path)
+            if self.data_manager.add_bookmark(name, path):
+                self.sync_bookmarks_folder()
+                self.status_bar.showMessage(f"🔖 Added to bookmarks: {name}", 3000)
+                QMessageBox.information(self, "Bookmarks", f"Added to bookmarks:\n{path}")
+            else:
+                self.status_bar.showMessage("🔖 Already bookmarked", 3000)
+        except Exception as e:
+            logger.error(f"Error adding to bookmarks: {e}", exc_info=True)
+
+    def remove_from_bookmarks(self, path: str) -> None:
+        """Remove a bookmark by its path if present."""
+        try:
+            bookmarks = self.data_manager.get_bookmarks()  # name -> path
+            to_remove = None
+            for name, target in bookmarks.items():
+                if os.path.abspath(target) == os.path.abspath(path):
+                    to_remove = name
+                    break
+            if to_remove:
+                if self.data_manager.remove_bookmark(to_remove):
+                    self.sync_bookmarks_folder()
+                    self.status_bar.showMessage("🔖 Removed from bookmarks", 3000)
+        except Exception as e:
+            logger.error(f"Error removing from bookmarks: {e}", exc_info=True)
+
+    # -------------------- Side Apps (Startup) support --------------------
+    def get_sideapps_dir(self) -> Path:
+        """Return the managed SideApps directory under app-code."""
+        return Path(__file__).parent.parent / 'SideApps'
+
+    def sync_sideapps_folder(self) -> None:
+        """Create/update shortcuts for all startup items in the managed folder.
+
+        Uses .lnk on Windows (or .url fallback). Clears stale shortcuts.
+        """
+        try:
+            sideapps_dir = self.get_sideapps_dir()
+            sideapps_dir.mkdir(parents=True, exist_ok=True)
+
+            # Clear existing entries we manage (.lnk/.url)
+            for entry in sideapps_dir.iterdir():
+                if entry.is_file() and (entry.suffix.lower() in ['.lnk', '.url']):
+                    try:
+                        entry.unlink()
+                    except Exception:
+                        pass
+
+            for target in self.data_manager.get_startup_apps():
+                safe_name = Path(target).name or 'app'
+                for ch in '<>:"/\\|?*':
+                    safe_name = safe_name.replace(ch, '_')
+
+                shortcut_path = sideapps_dir / f"{safe_name}.lnk"
+                ok, _ = self.file_ops.create_shortcut(target, str(shortcut_path))
+                if not ok:
+                    url_path = sideapps_dir / f"{safe_name}.url"
+                    self.file_ops.create_shortcut(target, str(url_path))
+        except Exception as e:
+            logger.error(f"Failed to sync side apps folder: {e}", exc_info=True)
+
+    def open_side_apps_folder(self) -> None:
+        """Sync and navigate to the managed SideApps folder."""
+        self.sync_sideapps_folder()
+        self.navigate_to_path(str(self.get_sideapps_dir()))
+
+    def add_to_side_apps(self, path: str | None = None) -> None:
+        """Add a file/folder/app to Side Apps (startup list)."""
+        try:
+            if path is None:
+                paths = self.get_selected_paths()
+                if not paths:
+                    self.status_bar.showMessage("⚠️ No item selected", 3000)
+                    return
+                path = paths[0]
+
+            if not isinstance(path, str):
+                return
+            path = os.path.abspath(path)
+            if not os.path.exists(path):
+                self.status_bar.showMessage("⚠️ Path does not exist", 3000)
+                return
+
+            if self.data_manager.add_startup_app(path):
+                self.sync_sideapps_folder()
+                self.status_bar.showMessage(f"🧩 Added to Side Apps: {os.path.basename(path)}", 3000)
+                # No confirmation dialog to keep flow quick
+            else:
+                self.status_bar.showMessage("🧩 Already in Side Apps", 3000)
+        except Exception as e:
+            logger.error(f"Error adding to Side Apps: {e}", exc_info=True)
+
+    def remove_from_side_apps(self, path: str) -> None:
+        """Remove a path from Side Apps (startup list)."""
+        try:
+            if self.data_manager.remove_startup_app(os.path.abspath(path)):
+                self.sync_sideapps_folder()
+                self.status_bar.showMessage("🧩 Removed from Side Apps", 3000)
+        except Exception as e:
+            logger.error(f"Error removing from Side Apps: {e}", exc_info=True)
+
+    def run_side_apps_on_startup(self) -> None:
+        """Auto-run/open items configured in startup list."""
+        try:
+            items = self.data_manager.get_startup_apps()
+            if not items:
+                return
+            for p in items:
+                try:
+                    if not os.path.exists(p):
+                        continue
+                    if self.file_ops.is_executable(p):
+                        # Launch without confirmation
+                        self.file_ops.run_executable(p)
+                    else:
+                        # Open with default handler (file/folder)
+                        self.file_ops.open_file(p)
+                except Exception:
+                    continue
+        except Exception as e:
+            logger.error(f"Error running side apps on startup: {e}", exc_info=True)
 
 # Alias for easier import
 FileExplorer = LiquidGlassFileExplorer

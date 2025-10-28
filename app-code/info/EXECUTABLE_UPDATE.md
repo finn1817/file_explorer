@@ -1,25 +1,25 @@
-# 🎉 MAJOR UPDATE: Full Executable & File Type Support!
+# Release notes: executable support and file type icons
 
 ## What Was Fixed
 
-### ❌ **Before**:
+### Before
 - All files in favorites showed generic 📄 icon
 - `.lnk` shortcuts showed as documents
 - No way to run executables from favorites
 - No special handling for scripts (.py, .bat, .ps1)
 - Limited file type recognition
 
-### ✅ **After**:
-- **60+ custom file type icons**
+### After
+- Dozens of custom file type icons
 - Proper icons for ALL file types
 - **Direct execution of scripts and executables**
 - Safe execution with confirmations
 - Context menu "▶️ Run" option
 - Smart favorite handling (folders vs files)
 
-## 🚀 New Features
+## What’s new
 
-### 1. **Enhanced Icon System**
+### 1) Icon system
 - ⚙️ Executables (.exe, .msi)
 - ⚡ Batch files (.bat, .cmd, .sh)
 - 💻 PowerShell scripts (.ps1)
@@ -31,7 +31,7 @@
 - 📦 Archives (zip, rar, 7z, etc.)
 - And 40+ more!
 
-### 2. **Execute Any File Type**
+### 2) Run common executable types
 ```python
 # Supported executables:
 ✅ .exe - Windows executables
@@ -45,13 +45,13 @@
 ✅ .msi - Installers
 ```
 
-### 3. **Smart Favorite Click Handling**
+### 3) Smart favorite clicks
 - **Folders**: Navigate to folder
 - **Executables**: Ask confirmation → Run
 - **Documents**: Open with default app
 - **Scripts**: Ask confirmation → Execute
 
-### 4. **Context Menu "Run" Option**
+### 4) Context menu “Run” option
 Right-click any executable and see:
 ```
 📂 Open
@@ -65,7 +65,7 @@ Right-click any executable and see:
 ⭐ Add to Favorites
 ```
 
-### 5. **Safety Features**
+### 5) Safety features
 Every execution shows confirmation:
 ```
 ╔═══════════════════════════════╗
@@ -80,12 +80,12 @@ Every execution shows confirmation:
    [Yes]              [No]
 ```
 
-## 📋 Code Changes
+## Code changes (high level)
 
 ### Modified Files:
 
 #### 1. `file_operations.py`
-✅ **Enhanced `get_file_icon()`**: Added 60+ file types
+✅ **Enhanced `get_file_icon()`**: Added many common types
 ✅ **New `is_executable()`**: Detect executable files
 ✅ **New `run_executable()`**: Execute files safely
 ✅ **New `get_shortcut_target()`**: Resolve .lnk files
@@ -96,7 +96,7 @@ Every execution shows confirmation:
 ✅ **New `run_file()`**: Execute with confirmation
 ✅ **Enhanced context menu**: Added "▶️ Run" option
 
-## 🎯 How It Works
+## How it works
 
 ### Icon Selection Flow:
 ```
@@ -130,7 +130,7 @@ Show success/error message
 Log result
 ```
 
-## 🔥 Examples
+## Examples
 
 ### Example 1: Python Script
 ```python
@@ -159,7 +159,7 @@ pause
 2. Add to favorites → Shows 🔗 icon
 3. Click → Confirm → Opens shutdown dialog
 
-## 📊 Comparison
+## Comparison (before/after)
 
 | Feature | Before | After |
 |---------|--------|-------|
@@ -172,7 +172,7 @@ pause
 | Context menu "Run" | ❌ No | ✅ Yes |
 | Detailed logging | ⚠️ Basic | ✅ Complete |
 
-## 🎪 Demo Workflow
+## Demo workflow
 
 ```
 1. Navigate to Desktop
@@ -185,7 +185,7 @@ pause
 8. Shutdown options open!
 ```
 
-## 🔒 Security
+## Security
 
 ### Built-in Safety:
 - ✅ Confirmation before execution
@@ -201,7 +201,7 @@ pause
 2025-10-27 21:30:01 - INFO - Successfully executed: file.exe
 ```
 
-## 💡 Pro Tips
+## Tips
 
 1. **Favorite your tools**: Python scripts, batch utilities, common executables
 2. **Quick access**: One-click execution from sidebar
@@ -209,24 +209,14 @@ pause
 4. **Safe testing**: Always shows confirmation before running
 5. **Unlimited favorites**: Scroll through as many as you need!
 
-## 🎉 Result
-
-**Your File Explorer is now MORE CAPABLE than Windows File Explorer!**
-
-✅ Can run any executable type
-✅ Better file type recognition
-✅ Proper icons for everything
-✅ Safer with confirmations
-✅ More convenient with favorites
-✅ Professional logging
-✅ Beautiful UI
-
-**This is production-ready file management software!** 🚀
+## Result
+• Run popular script/executable types with confirmation.
+• Better visual cues via icons.
+• Cleaner logs and safer defaults.
 
 ---
 
-**Date**: October 27, 2025
-**Status**: ✅ Fully Implemented & Tested
-**Files Modified**: 2 (file_operations.py, file_explorer.py)
-**New Icons**: 60+
-**New Features**: 5 major features
+Date: October 27, 2025
+Status: ✅ Implemented and tested
+Files touched: `file_operations.py`, `file_explorer.py`
+Notes: App launcher disables `.pyc` creation by default.
