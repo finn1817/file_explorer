@@ -5,6 +5,7 @@ import platform
 import json
 import logging
 from datetime import datetime
+from typing import Callable
 from pathlib import Path
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, 
                             QTreeView, QListView, QLineEdit, QPushButton, 
@@ -14,7 +15,7 @@ from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout,
 from PyQt6.QtCore import (Qt, QDir, QModelIndex, QTimer, pyqtSignal, 
                          QSortFilterProxyModel, QThread, pyqtSlot, QSize)
 from PyQt6.QtGui import (QAction, QKeySequence, QFont, QPixmap, QPalette, 
-                        QBrush, QColor, QIcon, QFileSystemModel)
+                        QBrush, QColor, QIcon, QFileSystemModel, QGuiApplication)
 from PyQt6.QtWidgets import QGraphicsBlurEffect, QGraphicsDropShadowEffect
 from send2trash import send2trash
 from file_operations import FileOperations
@@ -86,7 +87,19 @@ class LiquidGlassFileExplorer(QMainWindow):
     def init_ui(self):
         """Initialize the user interface"""
         self.setWindowTitle("✨ Liquid Glass File Explorer")
-        self.setGeometry(100, 100, 1200, 800)
+        # Fit window to 1920x1080 or the available screen size, whichever is smaller
+        screen = QGuiApplication.primaryScreen()
+        available = screen.availableGeometry() if screen else None
+        target_w, target_h = 1920, 1080
+        if available:
+            target_w = min(target_w, available.width())
+            target_h = min(target_h, available.height())
+        # Resize and center
+        self.resize(target_w, target_h)
+        if available:
+            frame = self.frameGeometry()
+            frame.moveCenter(available.center())
+            self.move(frame.topLeft())
         
         # Enable translucent background for better glass effect (optional)
         # self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground, True)
@@ -111,16 +124,20 @@ class LiquidGlassFileExplorer(QMainWindow):
         splitter = QSplitter(Qt.Orientation.Horizontal)
         main_layout.addWidget(splitter)
         
-    # Create sidebar
+        # Create sidebar
         self.create_sidebar(splitter)
         
         # Create main content area
         self.create_main_area(splitter)
         
-        # Set splitter proportions
-        splitter.setSizes([250, 950])
+        # Set splitter proportions relative to current window width
+        total_w = max(self.width(), 1)
+        left = max(280, int(total_w * 0.2))
+        right = max(600, total_w - left)
+        splitter.setSizes([left, right])
         
-        # Create toolbar
+        # Create toolbars
+        self.create_navigation_toolbar()
         self.create_toolbar()
         
         # Create status bar
@@ -347,59 +364,77 @@ class LiquidGlassFileExplorer(QMainWindow):
         parent.addWidget(sidebar)
 
     def create_main_area(self, parent):
-        """Create the main file viewing area"""
+        """Create the main file viewing area (file list only; nav is a toolbar)."""
         main_widget = QWidget()
         main_layout = QVBoxLayout(main_widget)
         main_layout.setContentsMargins(0, 0, 0, 0)
+
+        # File list view (multi-column like Windows Explorer)
+        self.file_list = QTreeView()
+        self.file_list.setRootIsDecorated(False)
+        self.file_list.setUniformRowHeights(True)
+        self.file_list.setAlternatingRowColors(True)
+        self.file_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.file_list.setSortingEnabled(True)
+        header = self.file_list.header()
+        header.setStretchLastSection(True)
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)   # Name
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)  # Size
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)  # Type
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)  # Date Modified
+        main_layout.addWidget(self.file_list)
         
-        # Address bar
-        address_layout = QHBoxLayout()
-        address_layout.setContentsMargins(10, 5, 10, 5)
-        
+        parent.addWidget(main_widget)
+
+    def create_navigation_toolbar(self):
+        """Create a movable toolbar for navigation, address, and search."""
+        nav_toolbar = QToolBar("Navigation")
+        nav_toolbar.setMovable(True)
+        nav_toolbar.setAllowedAreas(
+            Qt.ToolBarArea.TopToolBarArea | Qt.ToolBarArea.BottomToolBarArea
+        )
+
+        # Container widget with the previous layout
+        container = QWidget()
+        layout = QHBoxLayout(container)
+        layout.setContentsMargins(10, 5, 10, 5)
+
         self.back_btn = QPushButton("← Back")
         self.back_btn.setToolTip("Go back to parent directory (Alt+Left)")
         self.back_btn.setShortcut("Alt+Left")
-        
+
         self.forward_btn = QPushButton("→ Forward")
         self.forward_btn.setToolTip("Go forward (Alt+Right)")
         self.forward_btn.setShortcut("Alt+Right")
-        
+
         self.up_btn = QPushButton("↑ Up")
         self.up_btn.setToolTip("Go to parent folder (Alt+Up)")
         self.up_btn.setShortcut("Alt+Up")
-        
+
         self.refresh_btn = QPushButton("🔄 Refresh")
         self.refresh_btn.setToolTip("Refresh current folder (F5)")
         self.refresh_btn.setShortcut("F5")
-        
+
         self.address_bar = QLineEdit()
         self.address_bar.setPlaceholderText("Enter path...")
         self.address_bar.setToolTip("Enter a path and press Enter to navigate")
-        
+
         self.search_bar = QLineEdit()
         self.search_bar.setPlaceholderText("Search files...")
         self.search_bar.setMaximumWidth(250)
         self.search_bar.setToolTip("Search for files in the current folder")
-        
-        address_layout.addWidget(self.back_btn)
-        address_layout.addWidget(self.forward_btn)
-        address_layout.addWidget(self.up_btn)
-        address_layout.addWidget(self.refresh_btn)
-        address_layout.addWidget(QLabel("📁"))
-        address_layout.addWidget(self.address_bar)
-        address_layout.addWidget(QLabel("🔍"))
-        address_layout.addWidget(self.search_bar)
-        
-        main_layout.addLayout(address_layout)
-        
-        # File list view
-        self.file_list = QListView()
-        self.file_list.setViewMode(QListView.ViewMode.ListMode)
-        self.file_list.setAlternatingRowColors(True)
-        self.file_list.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
-        main_layout.addWidget(self.file_list)
-        
-        parent.addWidget(main_widget)
+
+        layout.addWidget(self.back_btn)
+        layout.addWidget(self.forward_btn)
+        layout.addWidget(self.up_btn)
+        layout.addWidget(self.refresh_btn)
+        layout.addWidget(QLabel("📁"))
+        layout.addWidget(self.address_bar)
+        layout.addWidget(QLabel("🔍"))
+        layout.addWidget(self.search_bar)
+
+        nav_toolbar.addWidget(container)
+        self.addToolBar(nav_toolbar)
 
     def create_toolbar(self):
         """Create the toolbar with file operations"""
@@ -500,10 +535,97 @@ class LiquidGlassFileExplorer(QMainWindow):
         self.file_model = QFileSystemModel()
         self.file_model.setRootPath("")
         
-        # Create proxy model for filtering
-        self.proxy_model = QSortFilterProxyModel()
+        # Create proxy model for filtering and column overrides
+        class DirectoryInfoProxyModel(QSortFilterProxyModel):
+            def __init__(self, explorer, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.explorer = explorer
+                self._size_pending: set[str] = set()
+
+            def columnCount(self, parent: QModelIndex = QModelIndex()) -> int:
+                # Mirror source
+                return super().columnCount(parent)
+
+            def data(self, index: QModelIndex, role: int = Qt.ItemDataRole.DisplayRole):
+                # Let source provide base
+                if not index.isValid():
+                    return super().data(index, role)
+                if role not in (Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.ToolTipRole):
+                    return super().data(index, role)
+
+                source_index = self.mapToSource(index)
+                is_dir = self.explorer.file_model.isDir(source_index)
+                column = index.column()
+
+                # Type column override for folders
+                if column == 2 and role == Qt.ItemDataRole.DisplayRole and is_dir:
+                    return "Folder"
+
+                # Size column formatting and folder size compute
+                if column == 1:
+                    # For files, format the size with banding for large sizes
+                    if not is_dir:
+                        try:
+                            size_bytes = int(self.explorer.file_model.size(source_index))
+                            if role == Qt.ItemDataRole.DisplayRole:
+                                return self.explorer.format_size_for_display(size_bytes)
+                            else:  # ToolTipRole
+                                return f"Exact size: {size_bytes:,} bytes (\n{self.explorer.human_size(size_bytes)})"
+                        except Exception:
+                            return super().data(index, role)
+                    # For folders: use cache or schedule compute
+                    path = self.explorer.file_model.filePath(source_index)
+                    cached = self.explorer.data_manager.get_folder_size_cached(path)
+                    if cached is not None:
+                        if role == Qt.ItemDataRole.DisplayRole:
+                            return self.explorer.format_size_for_display(int(cached))
+                        else:
+                            human = self.explorer.human_size(int(cached))
+                            band = self.explorer._size_band_label(int(cached))
+                            band_str = f"\nBand: {band}" if band else ""
+                            return f"Exact size: {int(cached):,} bytes (\n{human}){band_str}"
+                    # Schedule compute once; show ellipsis meanwhile
+                    if path not in self._size_pending:
+                        self._size_pending.add(path)
+                        self.explorer.request_folder_size(path, lambda: self.invalidate())
+                    if role == Qt.ItemDataRole.DisplayRole:
+                        return "…"
+                    else:
+                        return "Computing folder size…"
+
+                # Default
+                return super().data(index, role)
+
+            def lessThan(self, left: QModelIndex, right: QModelIndex) -> bool:
+                # Sort numerically for Size column
+                if left.column() == 1 and right.column() == 1:
+                    l_src = self.mapToSource(left)
+                    r_src = self.mapToSource(right)
+                    # Directories use cached size if available; otherwise treat as -1
+                    def size_for(idx: QModelIndex) -> int:
+                        if self.explorer.file_model.isDir(idx):
+                            p = self.explorer.file_model.filePath(idx)
+                            s = self.explorer.data_manager.get_folder_size_cached(p)
+                            return -1 if s is None else int(s)
+                        try:
+                            return int(self.explorer.file_model.size(idx))
+                        except Exception:
+                            return -1
+                    return size_for(l_src) < size_for(r_src)
+                return super().lessThan(left, right)
+
+        self.proxy_model = DirectoryInfoProxyModel(self)
         self.proxy_model.setSourceModel(self.file_model)
         self.proxy_model.setFilterCaseSensitivity(Qt.CaseSensitivity.CaseInsensitive)
+        # Ensure we filter on the name column and try recursive filtering (Qt >= 5.10)
+        try:
+            self.proxy_model.setFilterKeyColumn(0)
+        except Exception:
+            pass
+        try:
+            self.proxy_model.setRecursiveFilteringEnabled(True)
+        except Exception:
+            pass
         
         self.file_list.setModel(self.proxy_model)
 
@@ -742,6 +864,14 @@ class LiquidGlassFileExplorer(QMainWindow):
         else:
             self.proxy_model.setFilterWildcard("")
 
+        # Re-assert the current root in the view to avoid jumping to drives
+        try:
+            source_root = self.file_model.index(self.current_path)
+            proxy_root = self.proxy_model.mapFromSource(source_root)
+            self.file_list.setRootIndex(proxy_root)
+        except Exception:
+            pass
+
     def open_item(self, index):
         """Open file or folder on double click"""
         source_index = self.proxy_model.mapToSource(index)
@@ -756,11 +886,14 @@ class LiquidGlassFileExplorer(QMainWindow):
 
     # File operations
     def get_selected_paths(self):
-        """Get paths of selected items"""
-        selected_indexes = self.file_list.selectionModel().selectedIndexes()
+        """Get unique paths of selected items (Name column only)."""
+        sel_model = self.file_list.selectionModel()
+        if not sel_model:
+            return []
+        rows = sel_model.selectedRows(0)
         paths = []
-        for index in selected_indexes:
-            source_index = self.proxy_model.mapToSource(index)
+        for idx in rows:
+            source_index = self.proxy_model.mapToSource(idx)
             path = self.file_model.filePath(source_index)
             paths.append(path)
         return paths
@@ -813,6 +946,87 @@ class LiquidGlassFileExplorer(QMainWindow):
             
         self.refresh_current()
         self.status_bar.showMessage(f"📌 Pasted {success_count} item(s)")
+
+    # --------- Folder sizes (async compute and formatting) ---------
+    def human_size(self, size: int) -> str:
+        """Precise human-readable size with more specific decimals for KB/MB/GB.
+
+        Rules:
+        - Bytes: integer bytes
+        - <10 units: 2 decimals
+        - <100 units: 1 decimal
+        - otherwise: 0 decimals
+        """
+        try:
+            if size is None:
+                return "–"
+            units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
+            s = float(size)
+            i = 0
+            while s >= 1024 and i < len(units) - 1:
+                s /= 1024.0
+                i += 1
+            if i == 0:
+                return f"{int(s)} {units[i]}"
+            if s < 10:
+                return f"{s:.2f} {units[i]}"
+            if s < 100:
+                return f"{s:.1f} {units[i]}"
+            return f"{s:.0f} {units[i]}"
+        except Exception:
+            return str(size)
+
+    def _size_band_label(self, size: int) -> str:
+        """Return band label for sizes >= 25 GB, else empty string."""
+        try:
+            gb = 1024 * 1024 * 1024
+            if size >= 100 * gb:
+                return "100+ GB"
+            if size >= 50 * gb:
+                return "50+ GB"
+            if size >= 25 * gb:
+                return "25+ GB"
+            return ""
+        except Exception:
+            return ""
+
+    def format_size_for_display(self, size: int) -> str:
+        """Display size with banding rules:
+        - < 25 GB: show precise human size
+        - 25 GB ≤ size < 50 GB: show "25+ GB"
+        - 50 GB ≤ size < 100 GB: show "50+ GB"
+        - ≥ 100 GB: show "100+ GB"
+        """
+        try:
+            gb = 1024 * 1024 * 1024
+            if size < 25 * gb:
+                return self.human_size(size)
+            return self._size_band_label(size)
+        except Exception:
+            return self.human_size(size)
+
+    def request_folder_size(self, path: str, on_done: Callable | None = None) -> None:
+        """Compute folder size in a background thread, cache it, then refresh view."""
+        import threading
+
+        def _worker():
+            total = 0
+            try:
+                for root, dirs, files in os.walk(path):
+                    for f in files:
+                        fp = os.path.join(root, f)
+                        try:
+                            total += os.path.getsize(fp)
+                        except Exception:
+                            pass
+            except Exception:
+                pass
+            # Save to cache
+            self.data_manager.set_folder_size_cached(path, total)
+            # Refresh view back on UI thread
+            QTimer.singleShot(0, lambda: (on_done and on_done()))
+
+        threading.Thread(target=_worker, daemon=True).start()
 
     def rename_selected(self):
         """Rename selected item"""

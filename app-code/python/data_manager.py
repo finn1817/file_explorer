@@ -14,6 +14,9 @@ logger = logging.getLogger(__name__)
 
 class DataManager:
     """Manage all application data with CRUD operations"""
+    # Instance attribute type hints
+    _folder_sizes_cache: Dict[str, Any]
+    _folder_sizes_loaded: bool
     
     def __init__(self, app_dir: Optional[Path] = None):
         """Initialize the data manager
@@ -39,12 +42,17 @@ class DataManager:
             'bookmarks': self.data_dir / 'bookmarks.json',
             'recent_files': self.data_dir / 'recent_files.json',
             'startup': self.data_dir / 'startup.json',  # Side Apps (apps/files to auto-run/open)
+            'folder_sizes': self.data_dir / 'folder_sizes.json',  # Cache of computed folder sizes
         }
         
         logger.info(f"DataManager initialized with data directory: {self.data_dir}")
         
         # Initialize all data files
         self._initialize_files()
+
+        # In-memory caches (loaded on first use)
+        self._folder_sizes_cache = {}
+        self._folder_sizes_loaded = False
     
     def _initialize_files(self):
         """Initialize all data files with default structures"""
@@ -55,6 +63,7 @@ class DataManager:
             'bookmarks': {},
             'recent_files': [],
             'startup': [],
+            'folder_sizes': {},
         }
         
         for name, filepath in self.files.items():
@@ -496,3 +505,71 @@ class DataManager:
     def clear_startup_apps(self) -> bool:
         """Clear the startup list."""
         return self._write_json(self.files['startup'], [])
+
+    # ==================== FOLDER SIZE CACHE ====================
+
+    def _folder_sizes_all(self) -> Dict[str, Any]:
+        """Return the in-memory folder sizes cache, loading from disk once on first access."""
+        if not getattr(self, '_folder_sizes_loaded', False):
+            # Load once to avoid repeated disk reads during view painting
+            self._folder_sizes_cache = self._read_json(self.files['folder_sizes'], {}) or {}
+            self._folder_sizes_loaded = True
+        return self._folder_sizes_cache
+
+    def get_folder_size_cached(self, path: str) -> Optional[int]:
+        """Return cached folder size in bytes if present and still valid.
+
+        We treat cache as valid if the on-disk mtime of the folder matches
+        what we stored. If mtime differs, the cache is considered stale.
+        """
+        try:
+            data = self._folder_sizes_all()
+            rec = data.get(path)
+            if not isinstance(rec, dict):
+                return None
+            size = rec.get('size')
+            mtime_recorded = rec.get('mtime')
+            if size is None or mtime_recorded is None:
+                return None
+            # Validate against current mtime
+            from os.path import getmtime, exists
+            if not exists(path):
+                return None
+            mtime_now = getmtime(path)
+            if abs(float(mtime_now) - float(mtime_recorded)) > 0.001:
+                return None
+            return int(size)
+        except Exception:
+            return None
+
+    def set_folder_size_cached(self, path: str, size: int) -> bool:
+        """Write folder size and current mtime to cache without re-reading from disk each time.
+
+        Optimizations:
+        - Uses in-memory cache to avoid frequent disk reads in hot paths (e.g., view painting).
+        - Skips disk write if the cached value is already up to date.
+        """
+        try:
+            data = self._folder_sizes_all()
+            from os.path import getmtime, exists
+            mtime_now = getmtime(path) if exists(path) else 0.0
+            new_rec = {
+                'size': int(size),
+                'mtime': float(mtime_now),
+                'updated': datetime.now().isoformat(),
+            }
+
+            # If unchanged, avoid disk write
+            old = data.get(path)
+            if (
+                isinstance(old, dict)
+                and int(old.get('size', -1)) == new_rec['size']
+                and float(old.get('mtime', -1.0)) == new_rec['mtime']
+            ):
+                return True
+
+            data[path] = new_rec
+            # Persist current in-memory cache
+            return self._write_json(self.files['folder_sizes'], data)
+        except Exception:
+            return False
